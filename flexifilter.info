@@ -1,0 +1,11 @@
+; $Id: flexifilter.info,v 1.3 2008/02/29 22:11:51 cwgordon7 Exp $
+name = Flexifilter
+description = Allows creatation of flexible input filters entirely through the user interface.
+package = Flexifilter
+core = 6.x
+; Information added by drupal.org packaging script on 2010-05-01
+version = "6.x-1.2"
+core = "6.x"
+project = "flexifilter"
+datestamp = "1272687006"
+
