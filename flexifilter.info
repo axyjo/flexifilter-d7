@@ -3,9 +3,9 @@ name = Flexifilter
 description = Allows creatation of flexible input filters entirely through the user interface.
 package = Flexifilter
 core = 6.x
-; Information added by drupal.org packaging script on 2010-05-01
-version = "6.x-1.2"
-core = "6.x"
-project = "flexifilter"
-datestamp = "1272687006"
-
+files[] = flexifilter.install
+files[] = flexifilter.module
+files[] = flexifilter.admin.inc
+files[] = flexifilter.components.inc
+files[] = flexifilter.conditions.inc
+files[] = flexifilter.flexifilters.inc
