@@ -447,7 +447,7 @@ function flexifilter_load($fid) {
   if (!is_numeric($fid)) {
     return FALSE;
   }
-  $result = db_query('SELECT * FROM {flexifilters} WHERE fid = %d', $fid);
+  $result = db_query('SELECT * FROM {flexifilters} WHERE fid = :fid', array(':fid' => $fid));
   if ($result) {
     return _flexifilter_filter_from_db_row($result, TRUE);
   }
