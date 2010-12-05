@@ -13,10 +13,15 @@ define('FLEXIFILTER_PART_TYPE_ROOT', 2);
 define('FLEXIFILTER_MAX_FILTERS', 128);
 
 /**
- * Implementation of hook_perm().
+ * Implementation of hook_permission().
  */
-function flexifilter_perm() {
-  return array('administer flexifilter');
+function flexifilter_permission() {
+  return array(
+    'administer flexifilter' => array(
+      'title' => t('Administer flexifilter'),
+      'description' => t('Change administrative settings for flexifilter'),
+    ),
+  );
 }
 
 /**
