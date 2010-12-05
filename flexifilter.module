@@ -131,12 +131,12 @@ function flexifilter_menu() {
 function flexifilter_help($path, $arg) {
   switch ($path) {
     case 'admin/help#flexifilter':
-      $output = '<p>'. t('Flexifilters are flexible filters that can be used by <a href="@input_formats">Input Formats</a> to filter created content.', array('@input_formats' => url('admin/settings/filters'))) .'</p>';
+      $output = '<p>'. t('Flexifilters are flexible filters that can be used by <a href="@input_formats">Input Formats</a> to filter created content.', array('@input_formats' => url('admin/settings/filter'))) .'</p>';
       $output .= '<p>'. t('For more information, see the online handbook entry for <a href="@flexifilter">Flexifilter module</a>.', array('@flexifilter' => 'http://drupal.org/node/212410/')) .'</p>';
       return $output;
 
     case 'admin/build/flexifilters':
-      return '<p>'. t('Flexifilters are flexible filters that can be used by <a href="@input_formats">Input Formats</a> to filter created content.', array('@input_formats' => url('admin/settings/filters'))) .'</p>';
+      return '<p>'. t('Flexifilters are flexible filters that can be used by <a href="@input_formats">Input Formats</a> to filter created content.', array('@input_formats' => url('admin/settings/filter'))) .'</p>';
 
     case 'admin/build/flexifilters/%/edit':
       $output = '<p>'. t('Flexifilters are defined in terms of components. A component can range from something simple like "regex replacement" to "invoke other filter" or "while loop". By combining these components, you can create a filter to do what you want. Use the "Add component" dropdown to add a new component to the end of your filter, and then use the "Re/move" dropdown within the component to remove the component, or to move it up/down within the list of components.') .'</p>';
