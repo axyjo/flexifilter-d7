@@ -811,8 +811,12 @@ function flexifilter_filter_delete_form_submit($form, &$form_state) {
   if ($filter['enabled']) {
     flexifilter_remove_from_filters($filter['delta']);
   }
-  db_query('DELETE FROM {flexifilters_parts} WHERE fid = %d', $fid);
-  db_query('DELETE FROM {flexifilters} WHERE fid = %d', $fid);
+  db_delete('flexifilters_parts')
+  ->condition('fid', $fid)
+  ->execute();
+  db_delete('flexifilters')
+  ->condition('fid', $fid)
+  ->execute();
   drupal_set_message(t('Flexifilter deleted.'));
   $form_state['redirect'] = 'admin/structure/flexifilters';
 }
@@ -833,7 +837,12 @@ function flexifilter_filter_disable_form_submit($form, &$form_state) {
   $filter  = $filters[$fid];
   if ($filter['enabled']) {
     flexifilter_remove_from_filters($filter['delta']);
-    db_query('UPDATE {flexifilters} SET enabled = 0 WHERE fid = %d', $fid);
+    db_update('flexifilters')
+  ->fields(array(
+      'enabled' => 0,
+    ))
+  ->condition('fid', $fid)
+  ->execute();
     drupal_set_message(t('Flexifilter disabled.'));
   }
   $form_state['redirect'] = 'admin/structure/flexifilters';
@@ -854,7 +863,13 @@ function flexifilter_filter_enable_form_submit($form, &$form_state) {
   $filters = flexifilter_get_filters();
   $filter  = $filters[$fid];
   if (!$filter['enabled'] && flexifilter_get_number_enabled_filters() < FLEXIFILTER_MAX_FILTERS) {
-    db_query('UPDATE {flexifilters} SET enabled = 1, delta = %d WHERE fid = %d', flexifilter_get_unused_delta(), $fid);
+    db_update('flexifilters')
+  ->fields(array(
+      'enabled' => 1,
+      'delta' => flexifilter_get_unused_delta(),
+    ))
+  ->condition('fid', $fid)
+  ->execute();
     drupal_set_message(t('Flexifilter enabled.'));
   }
   $form_state['redirect'] = 'admin/structure/flexifilters';
