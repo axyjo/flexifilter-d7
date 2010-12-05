@@ -431,6 +431,7 @@ function flexifilter_component_text_pattern_replace($op, $settings, $text) {
 /**
  * Helper function for flexifilter_component_text_pattern_replace. Replaces text only once.
  * Cannot use str_replace with $count because Drupal supports PHP 4.
+ * GCI TODO: replace this with str_replace since D7 supports str_replace with $count.
  */
 function flexifilter_component_text_pattern_replace_once($pos, $search, $replace, $subject) {
   return drupal_substr($subject, 0, $pos) . $replace . drupal_substr($subject, $pos + drupal_strlen($search));
@@ -515,15 +516,6 @@ function flexifilter_component_chunk_grab($op, $settings, $text) {
         }
       }
       return $text;
-  }
-}
-
-/**
- * Replacement for stripos() for PHP 4.x.
- */
-if (!function_exists('stripos')) {
-  function stripos($haystack, $needle) {
-    return strpos(strtolower($haystack), strtolower($needle));
   }
 }
 
