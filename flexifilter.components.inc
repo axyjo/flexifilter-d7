@@ -689,7 +689,6 @@ function flexifilter_component_sequences($op, $settings, $text) {
   }
 }
 
-
 function flexifilter_sequences_replace_once($search, $replace, &$subject) {
   if (($pos = strpos($subject, $search)) !== FALSE) {
     $subject = drupal_substr($subject, 0, $pos) . $replace . drupal_substr($subject, $pos + drupal_strlen($search));
