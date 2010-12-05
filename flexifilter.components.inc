@@ -275,7 +275,7 @@ function flexifilter_component_while($op, $settings, $text) {
       // while (text contains "example") replace "example" with "e.g."
       // As the replacement would only run in processing, the while loop would loop
       // forever in preparation.
-      $limit = (integer)$settings['limit'];
+      $limit = (integer) $settings['limit'];
       $n = 0;
       if (flexifilter_components_involve_step($settings['components'], $op)) {
         while (flexifilter_invoke_condition($settings['condition'], $op, $text) == TRUE) {

@@ -249,7 +249,13 @@ function flexifilter_invoke_component($component, $op, $settings = array(), $tex
   $_flexifilter_preview = variable_get('flexifilter_preview', FALSE);
   if ($_flexifilter_preview) {
     $_flexifilter_preview_text = variable_get('flexifilter_preview_text', array());
-    $_flexifilter_preview_text[] = array('value' => $text, 'type' => 'component', 'step' => $op, 'class' => $component['label'], 'settings' => $settings);
+    $_flexifilter_preview_text[] = array(
+      'value' => $text,
+      'type' => 'component',
+      'step' => $op,
+      'class' => $component['label'],
+      'settings' => $settings,
+    );
     variable_set('flexifilter_preview_text', $_flexifilter_preview_text);
   }
   return $text;
@@ -285,7 +291,6 @@ function flexifilter_invoke_condition($data, $op, $text = '') {
 
   switch ($op) {
     // For settings, return the value as-is
-
     case 'settings':
       return $return_value;
 

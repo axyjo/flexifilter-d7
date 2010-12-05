@@ -216,7 +216,10 @@ function flexifilter_filter_edit_form_condition($data, $show_advanced) {
       '#title' => t('No condition'),
       '#description' => t('There is no condition set. This will probably cause the component to do nothing, as "No Condition" evaluates to false.'),
     );
-    $form['class'] = array('#type' => 'hidden', '#value' => '');
+    $form['class'] = array(
+      '#type' => 'hidden',
+      '#value' => '',
+    );
     return $form;
   }
 
@@ -230,7 +233,10 @@ function flexifilter_filter_edit_form_condition($data, $show_advanced) {
     '#title' => $condition['label'],
     '#description' => $condition['description'],
   );
-  $form['class'] = array('#type' => 'hidden', '#value' => $data['class']);
+  $form['class'] = array(
+    '#type' => 'hidden',
+    '#value' => $data['class'],
+  );
   $custom_settings = array();
   foreach ($data as $key => $value) {
     if (strncmp($key, 'setting_', 8) == 0) {
@@ -250,7 +256,7 @@ function flexifilter_filter_edit_form_condition($data, $show_advanced) {
       $condition_max_id = 0;
       foreach ($data as $key => $sub_condition) {
         if (strncmp($key, 'condition_', 10) == 0) {
-          $condition_max_id = max($condition_max_id, 1 + (int)substr($key, 10));
+          $condition_max_id = max($condition_max_id, 1 + (int) substr($key, 10));
           if (!isset($sub_condition['op'])) {
             $form[$key] = flexifilter_filter_edit_form_condition($sub_condition, $show_advanced);
           }
@@ -276,7 +282,10 @@ function flexifilter_filter_edit_form_condition($data, $show_advanced) {
       );
       // Add some kind of seperator, otherwise this add button and the remove button are put onto the same line
       // which is just a little bit confusing to the user. Hence we use a horizontal rule to seperate them alot.
-      $form['end_add_cond'] = array('#type' => 'markup', '#value' => '<br/><br/><hr/><br/>');
+      $form['end_add_cond'] = array(
+        '#type' => 'markup',
+        '#value' => '<br/><br/><hr/><br/>',
+      );
     }
   }
   $form['op'] = array(
@@ -408,7 +417,7 @@ function flexifilter_filter_edit_form_component($data, $new_weight, $is_first, $
  * Helper function; sorts components by weight.
  */
 function _flexifilter_components_sort_weight($a, $b) {
-  return ((float)$a['weight']) > ((float)$b['weight']);
+  return ((float) $a['weight']) > ((float) $b['weight']);
 }
 
 /**
@@ -440,10 +449,10 @@ function flexifilter_filter_edit_form_components($data, &$data_base, $show_advan
     if (isset($component['op'])) {
       switch ($component['move']) {
         /*
-          Careful; this component is NOT VALIDATED by the FAPI. We only act upon certain
-          values ('top', 'up', 'down', 'bottom', 'remove'), which are always valid (even
-          if they have no effect). Other values are silently ignored.
-        */
+         Careful; this component is NOT VALIDATED by the FAPI. We only act upon certain
+         values ('top', 'up', 'down', 'bottom', 'remove'), which are always valid (even
+         if they have no effect). Other values are silently ignored.
+         */
 
         case 'top':
           $components[$key]['weight'] = -1000;
@@ -565,8 +574,14 @@ function flexifilter_filter_edit_form($form_state, $flexifilter = 'new') {
     );
   }
   $form['components'] = flexifilter_filter_edit_form_components($data['components'], $data['components'], $data['basic']['advanced'] == 1);
-  $form['components']['id_prefix'] = array('#type' => 'hidden', '#value' => $data['components']['id_prefix']);
-  $form['components']['id_next'] = array('#type' => 'hidden', '#value' => $data['components']['id_next']);
+  $form['components']['id_prefix'] = array(
+    '#type' => 'hidden',
+    '#value' => $data['components']['id_prefix'],
+  );
+  $form['components']['id_next'] = array(
+    '#type' => 'hidden',
+    '#value' => $data['components']['id_next'],
+  );
   if (isset($expand_root_levels) && $expand_root_levels) {
     $form['basic']['#collapsed'] = FALSE;
     $form['components']['#collapsed'] = FALSE;
@@ -727,7 +742,10 @@ function flexifilter_filter_edit_form_submit($form, &$form_state) {
 
 function flexifilter_filter_delete_form($form_state, $flexifilter) {
   $form = array();
-  $form['fid'] = array('#type' => 'hidden', '#value' => $flexifilter['id']);
+  $form['fid'] = array(
+    '#type' => 'hidden',
+    '#value' => $flexifilter['id'],
+  );
 
   return confirm_form($form, t('Are you sure you want to delete the flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/build/flexifilters', t('This action cannot be undone.'), t('Delete'), t('Cancel'));
 }
@@ -752,7 +770,10 @@ function flexifilter_filter_delete_form_submit($form, &$form_state) {
 
 function flexifilter_filter_disable_form($form_state, $flexifilter) {
   $form = array();
-  $form['fid'] = array('#type' => 'hidden', '#value' => $flexifilter['id']);
+  $form['fid'] = array(
+    '#type' => 'hidden',
+    '#value' => $flexifilter['id'],
+  );
 
   return confirm_form($form, t('Are you sure you want to disable the flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/build/flexifilters', t('If you disable the flexifilter, then it cannot be used in any Input Formats.'), t('Disable'), t('Cancel'));
 }
@@ -771,7 +792,10 @@ function flexifilter_filter_disable_form_submit($form, &$form_state) {
 
 function flexifilter_filter_enable_form($form_state, $flexifilter) {
   $form = array();
-  $form['fid'] = array('#type' => 'hidden', '#value' => $flexifilter['id']);
+  $form['fid'] = array(
+    '#type' => 'hidden',
+    '#value' => $flexifilter['id'],
+  );
 
   return confirm_form($form, t('Are you sure you want to enable the flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/build/flexifilters', t(''), t('Enable'), t('Cancel'));
 }
@@ -883,7 +907,7 @@ function flexifilter_filter_preview_form($form_state, $flexifilter) {
       '#value' => $flexifilter,
     );
     $form['submit'] = array(
-     '#type' => 'submit',
+      '#type' => 'submit',
       '#value' => t('Preview'),
     );
   }

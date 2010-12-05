@@ -151,23 +151,23 @@ function flexifilter_condition_text_length($op, $settings, $text) {
     case 'process':
       $length   = drupal_strlen($text);
       $operator = isset($settings['operator']) ? $settings['operator'] : 0;
-      $num      = isset($settings['num']) ? $settings['num'] : variable_get('teaser_length', 600);;
+      $num      = isset($settings['num']) ? $settings['num'] : variable_get('teaser_length', 600);
       switch ($operator) {
-      case 0:
-        return ($length < $num);
+        case 0:
+          return ($length < $num);
 
-      case 1:
-        return ($length <= $num);
+        case 1:
+          return ($length <= $num);
 
-      case 2:
-        return ($length == $num);
+        case 2:
+          return ($length == $num);
 
-      case 3:
-        return ($length >= $num);
+        case 3:
+          return ($length >= $num);
 
-      case 4:
-        return ($length > $num);
-    }
+        case 4:
+          return ($length > $num);
+      }
   }
 }
 

@@ -185,7 +185,7 @@ function flexifilter_flexifilters() {
                     ),
                     array(
                       'class' => 'flexifilter_control_if',
-                      'settings' =>  array(
+                      'settings' => array(
                         'components' => array(
                           array(
                             'class' => 'flexifilter_text_prepend',
