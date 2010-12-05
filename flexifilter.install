@@ -143,22 +143,3 @@ function flexifilter_schema() {
 
   return $schema;
 }
-
-/**
- * Update function: add the 'cache' field to the {flexifilters} table.
- */
-function flexifilter_update_6100($ret) {
-  $table = 'flexifilters';
-  $field_name = 'cache';
-  $field_def = array(
-    'type' => 'int',
-    'unsigned' => TRUE,
-    'size' => 'tiny',
-    'not null' => TRUE,
-    'default' => 0,
-    'description' => '1 if the flexifilter has caching enabled, 0 otherwise. Used for dynamic filters.',
-    'initial' => 1,
-  );
-  db_add_field($ret, $table, $field_name, $field_def);
-  return $ret;
-}
