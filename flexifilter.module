@@ -448,8 +448,8 @@ function flexifilter_load($fid) {
     return FALSE;
   }
   $result = db_query('SELECT * FROM {flexifilters} WHERE fid = %d', $fid);
-  if ($row = db_fetch_object($result)) {
-    return _flexifilter_filter_from_db_row($row, TRUE);
+  if ($result) {
+    return _flexifilter_filter_from_db_row($result, TRUE);
   }
   return FALSE;
 }
@@ -479,7 +479,7 @@ function flexifilter_get_filters($include_components = TRUE, $reset = FALSE) {
   if (!isset($cache[$include_components]) || $reset) {
     $filters = array();
     $result = db_query('SELECT * FROM {flexifilters}');
-    while ($row = db_fetch_object($result)) {
+    foreach ($result as $row) {
       $filters[$row->fid] = _flexifilter_filter_from_db_row($row, $include_components);
     }
     $cache[$include_components] = $filters;
@@ -527,7 +527,7 @@ function flexifilter_save_filter($filter) {
   else {
     $pids_to_reuse = array();
     $result = db_query('SELECT pid FROM {flexifilters_parts} WHERE fid = :fid', array(':fid' => $fid));
-    while ($row = db_fetch_object($result)) {
+    foreach ($result as $row) {
       $pids_to_reuse[] = $row->pid;
     }
     sort($pids_to_reuse, SORT_NUMERIC);
@@ -692,8 +692,8 @@ function flexifilter_get_filter_by_delta($delta, $reset = FALSE) {
   }
   if (!isset($cache[$delta]) || $reset) {
     $result = db_query('SELECT * FROM {flexifilters} WHERE enabled = :enabled AND delta = :delta', array(':enabled' => 1, ':delta' => $delta));
-    if ($row = db_fetch_object($result)) {
-      $cache[$delta] = _flexifilter_filter_from_db_row($row, TRUE);
+    if ($result) {
+      $cache[$delta] = _flexifilter_filter_from_db_row($result, TRUE);
     }
     else {
       $cache[$delta] = FALSE;
@@ -724,7 +724,7 @@ function _flexifilter_filter_from_db_row($row, $include_components) {
     $components_flat    = array();
     $component_children = array();
     $id_next            = 0;
-    while ($row = db_fetch_object($result)) {
+    foreach ($result as $row) {
       $components_flat[$row->pid] = array(
         'class' => $row->class_name,
         'settings' => $row->settings,
