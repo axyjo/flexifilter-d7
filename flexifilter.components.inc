@@ -134,7 +134,7 @@ function flexifilter_flexifilter_components() {
   );
 
   // Allow existing filters to be used as components
-  foreach (module_list() as $module) {
+  foreach (module_implements('filter') as $module) {
     if ($module !== 'flexifilter') {
       $list = module_invoke($module, 'filter', 'list');
       if (isset($list) && is_array($list)) {

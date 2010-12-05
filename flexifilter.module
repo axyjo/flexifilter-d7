@@ -2,9 +2,9 @@
 // $Id: flexifilter.module,v 1.16.2.7 2008/11/22 22:13:33 cwgordon7 Exp $
 
 $path = drupal_get_path('module', 'flexifilter');
-include_once ($path . '/flexifilter.components.inc');
-include_once ($path . '/flexifilter.conditions.inc');
-include_once ($path . '/flexifilter.flexifilters.inc');
+include_once DRUPAL_ROOT . '/' . ($path . '/flexifilter.components.inc');
+include_once DRUPAL_ROOT . '/' . ($path . '/flexifilter.conditions.inc');
+include_once DRUPAL_ROOT . '/' . ($path . '/flexifilter.flexifilters.inc');
 
 define('FLEXIFILTER_PART_TYPE_COMPONENT', 0);
 define('FLEXIFILTER_PART_TYPE_CONDITION', 1);
@@ -845,7 +845,7 @@ function flexifilter_install_flexifilters($module, $flexifilters = NULL) {
     // Allow for magic file naming.
     $file = drupal_get_path('module', $module) . '/$module.flexifilters.inc';
     if (file_exists($file)) {
-      require_once $file;
+      require_once DRUPAL_ROOT . '/' . $file;
     }
     $flexifilters = module_invoke($module, 'flexifilters');
   }
