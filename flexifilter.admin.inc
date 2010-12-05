@@ -722,7 +722,6 @@ function flexifilter_filter_edit_form_submit_components($data, $fid, &$pids_to_r
   return $parent;
 }
 
-
 function flexifilter_filter_edit_form_submit_condition($data, $fid, &$pids_to_reuse, $parent) {
   if ($our_pid = array_shift($pids_to_reuse)) {
     db_update('flexifilters_parts')
