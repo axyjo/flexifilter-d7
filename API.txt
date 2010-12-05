@@ -24,7 +24,7 @@ function hook_flexifilter() {
 A description of hook_flexifilter_components:
 
 /**
- * Implementation of hook_flexifilter_components()
+ * Implements hook_flexifilter_components().
  *
  * @return An array of components to be used by the Flexifilter module. The keys of this array
  * are unique identifiers for the component (called the component class), and the values of the

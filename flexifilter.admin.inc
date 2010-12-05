@@ -2,6 +2,11 @@
 // $Id: flexifilter.admin.inc,v 1.14.2.3 2008/11/22 22:13:33 cwgordon7 Exp $
 
 /**
+ * @file
+ * Contains administrative pages for the Flexifield module.
+ */
+
+/**
  * Generates the form for the admin overview page
  */
 function flexifilter_filter_list_form() {
@@ -42,11 +47,11 @@ function flexifilter_filter_list_form_table($enabled) {
       $row   = array($filter['label'], $filter['description']);
       $row[] = l(t('Edit'), 'admin/build/flexifilters/' . $id . '/edit', array(), drupal_get_destination());
       $row[] = l(t('Delete'), 'admin/build/flexifilters/' . $id . '/delete', array(), drupal_get_destination());
-      $row[] = l(t('Preview'), 'admin/build/flexifilters/' . $id . '/preview', array(), drupal_get_destination());  
+      $row[] = l(t('Preview'), 'admin/build/flexifilters/' . $id . '/preview', array(), drupal_get_destination());
       if ($show_disable_link) {
         $row[] = l(t('Disable'), 'admin/build/flexifilters/' . $id . '/disable', array(), drupal_get_destination());
       }
-      else if ($show_enable_link) {
+      elseif ($show_enable_link) {
         $row[] = l(t('Enable'), 'admin/build/flexifilters/' . $id . '/enable', array(), drupal_get_destination());
       }
       else {
@@ -165,7 +170,7 @@ function flexifilter_filter_edit_form_new_component_data($component_class) {
   $data       = array(
     'class' => $component_class,
     'weight' => 10000,
-    'is_new' => true,
+    'is_new' => TRUE,
   );
   if ($component['step'] == 'either') {
     $data['step'] = 'process';
@@ -379,7 +384,7 @@ function flexifilter_filter_edit_form_component($data, $new_weight, $is_first, $
     '#options' => array(),
     // If the element at the bottom is moved to the top, then the #value of 'top' will no longer be in the downdown
     // and the FAPI throws a nasty validation error. Hence mark it already validated and we will do our own validation.
-    '#validated' => true,
+    '#validated' => TRUE,
   );
   if (!$is_first) {
     $form['move']['#options']['top'] = t('Move to top');
@@ -818,7 +823,7 @@ function flexifilter_filter_input_form($form_state) {
   return $form;
 }
 
-function flexifilter_filter_input_form_submit($form, &$form_state) { 
+function flexifilter_filter_input_form_submit($form, &$form_state) {
   $fid = unserialize($form_state['values']['flexifilter']);
   if ($fid) {
     drupal_goto('admin/build/flexifilters/' . flexifilter_save_filter($form_state['values']['flexifilter']) . '/edit');

@@ -2,7 +2,12 @@
 // $Id: flexifilter.install,v 1.6.2.4 2008/11/22 22:13:33 cwgordon7 Exp $
 
 /**
- * Implementation of hook_install().
+ * @file
+ * Install, update and uninstall functions for the Flexifield module.
+ */
+
+/**
+ * Implements hook_install().
  */
 function flexifilter_install() {
   drupal_install_schema('flexifilter');
@@ -11,14 +16,14 @@ function flexifilter_install() {
 }
 
 /**
- * Implementation of hook_uninstall().
+ * Implements hook_uninstall().
  */
 function flexifilter_uninstall() {
   drupal_uninstall_schema('flexifilter');
 }
 
 /**
- * Implementation of hook_schema().
+ * Implements hook_schema().
  */
 function flexifilter_schema() {
   $schema = array();

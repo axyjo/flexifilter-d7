@@ -126,7 +126,7 @@ function flexifilter_menu() {
 }
 
 /**
- * Implements hook_help()
+ * Implements hook_help().
  */
 function flexifilter_help($path, $arg) {
   switch ($path) {
@@ -376,7 +376,7 @@ function flexifilter_get_grouped_labels($elements) {
 }
 
 /**
- * Implements hook_filter
+ * Implements hook_filter().
  *
  * Maps flexifilters into the existing filters system. Currently maps $delta to the
  * flexifilter ID. This will have to change, as the filter system stores delta as a
@@ -414,7 +414,7 @@ function flexifilter_filter($op, $delta = 0, $format = -1, $text = '') {
 }
 
 /**
- * Implements hook_filter_tips.
+ * Implements hook_filter_tips().
  */
 function flexifilter_filter_tips($delta, $format, $long = FALSE) {
   $flexifilter = flexifilter_get_filter_by_delta($delta);
@@ -426,7 +426,7 @@ function flexifilter_filter_tips($delta, $format, $long = FALSE) {
     if ($pos === FALSE) {
       return substr($flexifilter['description'], 0);
     }
-	  return substr($flexifilter['description'], 0, $pos);
+    return substr($flexifilter['description'], 0, $pos);
   }
 }
 

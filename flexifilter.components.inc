@@ -2,7 +2,12 @@
 // $Id: flexifilter.components.inc,v 1.14.2.2 2008/11/22 22:23:18 cwgordon7 Exp $
 
 /**
- * Implementation of hook_flexifilter_components()
+ * @file
+ * Contains the components to be used by the Flexifield module.
+ */
+
+/**
+ * Implements hook_flexifilter_components().
  *
  * @return An array of components to be used by the Flexifilter module. The keys of this array
  * are unique identifiers for the component (called the component class), and the values of the
@@ -293,7 +298,7 @@ function flexifilter_component_while($op, $settings, $text) {
  *
  * @param $settings
  *   The settings to set the global configuration to.
- * @see _flexifilter_pop_conf
+ * @see _flexifilter_pop_conf()
  */
 function _flexifilter_push_conf($settings) {
   global $conf;
@@ -310,7 +315,7 @@ function _flexifilter_push_conf($settings) {
  *
  * @param $old
  *   The old settings to revert back to.
- * @see _flexifilter_push_conf
+ * @see _flexifilter_push_conf()
  */
 function _flexifilter_pop_conf($old) {
   global $conf;
@@ -702,7 +707,7 @@ function flexifilter_sequences_replace_once($search, $replace, &$subject) {
 }
 
 /**
- * Implementation of hook_flexifilter_sequences.
+ * Implements hook_flexifilter_sequences().
  */
 function flexifilter_flexifilter_sequences() {
   return array(

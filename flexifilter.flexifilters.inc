@@ -2,7 +2,12 @@
 // $Id: flexifilter.flexifilters.inc,v 1.4 2008/01/22 00:48:28 cwgordon7 Exp $
 
 /**
- * Implementation of hook_flexifilters.
+ * @file
+ * Contains sample filters for the Flexifield module.
+ */
+
+/**
+ * Implements hook_flexifilters().
  */
 function flexifilter_flexifilters() {
   return array(
@@ -10,8 +15,8 @@ function flexifilter_flexifilters() {
       'label' => 'Mediawiki Format',
       'description' => 'This is an example format which provides a wikimedia-style input format.',
       'id' => '1',
-      'enabled' => true,
-      'advanced' => true,
+      'enabled' => TRUE,
+      'advanced' => TRUE,
       'delta' => '0',
       'components' => array(
         array(

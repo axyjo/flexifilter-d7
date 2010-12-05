@@ -2,7 +2,12 @@
 // $Id: flexifilter.conditions.inc,v 1.6 2008/01/22 00:48:28 cwgordon7 Exp $
 
 /**
- * Implementation of hook_flexifilter_conditions()
+ * @file
+ * Contains the condition callback functions for the Flexifield module.
+ */
+
+/**
+ * Implements hook_flexifilter_conditions().
  */
 function flexifilter_flexifilter_conditions() {
   $conditions = array();
