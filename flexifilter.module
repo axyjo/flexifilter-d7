@@ -29,7 +29,7 @@ function flexifilter_permission() {
  */
 function flexifilter_menu() {
   $items = array();
-  $items['admin/build/flexifilters'] = array(
+  $items['admin/structure/flexifilters'] = array(
     'title' => 'Flexifilters',
     'description' => 'Create new flexible input filters without writing any code.',
     'page callback' => 'drupal_get_form',
@@ -37,11 +37,11 @@ function flexifilter_menu() {
     'page arguments' => array('flexifilter_filter_list_form'),
     'file' => 'flexifilter.admin.inc',
   );
-  $items['admin/build/flexifilters/list'] = array(
+  $items['admin/structure/flexifilters/list'] = array(
     'title' => 'List',
     'type' => MENU_DEFAULT_LOCAL_TASK,
   );
-  $items['admin/build/flexifilters/add'] = array(
+  $items['admin/structure/flexifilters/add'] = array(
     'title' => 'Add new flexifilter',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('flexifilter_filter_edit_form'),
@@ -50,7 +50,7 @@ function flexifilter_menu() {
     'access arguments' => array('administer flexifilter'),
     'file' => 'flexifilter.admin.inc',
   );
-  $items['admin/build/flexifilters/import'] = array(
+  $items['admin/structure/flexifilters/import'] = array(
     'title' => 'Import a flexifilter',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('flexifilter_filter_input_form'),
@@ -59,7 +59,7 @@ function flexifilter_menu() {
     'access arguments' => array('administer flexifilter'),
     'file' => 'flexifilter.admin.inc',
   );
-  $items['admin/build/flexifilters/defaults'] = array(
+  $items['admin/structure/flexifilters/defaults'] = array(
     'title' => 'Load a default flexifilter',
     'page callback' => 'drupal_get_form',
     'page arguments' => array('flexifilter_filter_default_form'),
@@ -68,7 +68,7 @@ function flexifilter_menu() {
     'access arguments' => array('administer flexifilter'),
     'file' => 'flexifilter.admin.inc',
   );
-  $items['admin/build/flexifilters/%flexifilter'] = array(
+  $items['admin/structure/flexifilters/%flexifilter'] = array(
     'title callback' => 'flexifilter_get_field',
     'title arguments' => array(3, 'label'),
     'type' => MENU_CALLBACK,
@@ -77,12 +77,12 @@ function flexifilter_menu() {
     'access arguments' => array('administer flexifilter'),
     'file' => 'flexifilter.admin.inc',
   );
-  $items['admin/build/flexifilters/%flexifilter/edit'] = array(
+  $items['admin/structure/flexifilters/%flexifilter/edit'] = array(
     'type' => MENU_DEFAULT_LOCAL_TASK,
     'access arguments' => array('administer flexifilter'),
     'title' => 'Edit',
   );
-  $items['admin/build/flexifilters/%flexifilter/export'] = array(
+  $items['admin/structure/flexifilters/%flexifilter/export'] = array(
     'title' => 'Export',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'drupal_get_form',
@@ -90,7 +90,7 @@ function flexifilter_menu() {
     'access arguments' => array('administer flexifilter'),
     'file' => 'flexifilter.admin.inc',
   );
-  $items['admin/build/flexifilters/%flexifilter/preview'] = array(
+  $items['admin/structure/flexifilters/%flexifilter/preview'] = array(
     'title' => 'Preview',
     'type' => MENU_LOCAL_TASK,
     'page callback' => 'drupal_get_form',
@@ -98,7 +98,7 @@ function flexifilter_menu() {
     'access arguments' => array('administer flexifilter'),
     'file' => 'flexifilter.admin.inc',
   );
-  $items['admin/build/flexifilters/%flexifilter/delete'] = array(
+  $items['admin/structure/flexifilters/%flexifilter/delete'] = array(
     'title' => 'Delete',
     'type' => MENU_CALLBACK,
     'page callback' => 'drupal_get_form',
@@ -106,7 +106,7 @@ function flexifilter_menu() {
     'access arguments' => array('administer flexifilter'),
     'file' => 'flexifilter.admin.inc',
   );
-  $items['admin/build/flexifilters/%flexifilter/enable'] = array(
+  $items['admin/structure/flexifilters/%flexifilter/enable'] = array(
     'title' => 'Enable',
     'type' => MENU_CALLBACK,
     'page callback' => 'drupal_get_form',
@@ -114,7 +114,7 @@ function flexifilter_menu() {
     'access arguments' => array('administer flexifilter'),
     'file' => 'flexifilter.admin.inc',
   );
-  $items['admin/build/flexifilters/%flexifilter/disable'] = array(
+  $items['admin/structure/flexifilters/%flexifilter/disable'] = array(
     'title' => 'Disable',
     'type' => MENU_CALLBACK,
     'page callback' => 'drupal_get_form',
@@ -131,14 +131,14 @@ function flexifilter_menu() {
 function flexifilter_help($path, $arg) {
   switch ($path) {
     case 'admin/help#flexifilter':
-      $output = '<p>' . t('Flexifilters are flexible filters that can be used by <a href="@input_formats">Input Formats</a> to filter created content.', array('@input_formats' => url('admin/settings/filter'))) . '</p>';
+      $output = '<p>' . t('Flexifilters are flexible filters that can be used by <a href="@input_formats">Input Formats</a> to filter created content.', array('@input_formats' => url('admin/config/filter'))) . '</p>';
       $output .= '<p>' . t('For more information, see the online handbook entry for <a href="@flexifilter">Flexifilter module</a>.', array('@flexifilter' => 'http://drupal.org/node/212410/')) . '</p>';
       return $output;
 
-    case 'admin/build/flexifilters':
-      return '<p>' . t('Flexifilters are flexible filters that can be used by <a href="@input_formats">Input Formats</a> to filter created content.', array('@input_formats' => url('admin/settings/filter'))) . '</p>';
+    case 'admin/structure/flexifilters':
+      return '<p>' . t('Flexifilters are flexible filters that can be used by <a href="@input_formats">Input Formats</a> to filter created content.', array('@input_formats' => url('admin/config/filter'))) . '</p>';
 
-    case 'admin/build/flexifilters/%/edit':
+    case 'admin/structure/flexifilters/%/edit':
       $output = '<p>' . t('Flexifilters are defined in terms of components. A component can range from something simple like "regex replacement" to "invoke other filter" or "while loop". By combining these components, you can create a filter to do what you want. Use the "Add component" dropdown to add a new component to the end of your filter, and then use the "Re/move" dropdown within the component to remove the component, or to move it up/down within the list of components.') . '</p>';
       $output .= '<p>' . t('Some components (for example, the if/while loops) can have components and conditions within them. In this case, the if/while has a list of components, just like the filter itself has a list of components. The if/while will also have a condition, which controls when the list of components happen.');
       return $output;
@@ -774,8 +774,8 @@ function flexifilter_install_flexifilters($module, $flexifilters = NULL) {
   $fids = array();
   foreach ($flexifilters as $flexifilter) {
     $fid = flexifilter_save_filter($flexifilter);
-    drupal_set_message(t('The !url flexifilter has been saved.', array('!url' => l($flexifilter['label'], "admin/build/flexifilters/$fid"))));
-    watchdog('flexifilter', 'The !url flexifilter has been saved.', array('!url' => l($flexifilter['label'], "admin/build/flexifilters/$fid")));
+    drupal_set_message(t('The !url flexifilter has been saved.', array('!url' => l($flexifilter['label'], "admin/structure/flexifilters/$fid"))));
+    watchdog('flexifilter', 'The !url flexifilter has been saved.', array('!url' => l($flexifilter['label'], "admin/structure/flexifilters/$fid")));
     $fids[] = $fid;
   }
   return $fids;

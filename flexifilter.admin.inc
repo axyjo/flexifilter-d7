@@ -9,7 +9,7 @@
 /**
  * Generates the form for the admin overview page
  */
-function flexifilter_filter_list_form() {
+function flexifilter_filter_list_form($form, &$form_state) {
   drupal_set_title(t('Flexifilters overview'));
   $path = drupal_get_path('module', 'flexifilter') . '/flexifilter.css';
   drupal_add_css($path, array('preprocess' => FALSE));
@@ -45,14 +45,14 @@ function flexifilter_filter_list_form_table($enabled) {
   foreach ($filters as $id => $filter) {
     if ($filter['enabled'] == $enabled) {
       $row   = array($filter['label'], $filter['description']);
-      $row[] = l(t('Edit'), 'admin/build/flexifilters/' . $id . '/edit', array(), drupal_get_destination());
-      $row[] = l(t('Delete'), 'admin/build/flexifilters/' . $id . '/delete', array(), drupal_get_destination());
-      $row[] = l(t('Preview'), 'admin/build/flexifilters/' . $id . '/preview', array(), drupal_get_destination());
+      $row[] = l(t('Edit'), 'admin/structure/flexifilters/' . $id . '/edit', array(), drupal_get_destination());
+      $row[] = l(t('Delete'), 'admin/structure/flexifilters/' . $id . '/delete', array(), drupal_get_destination());
+      $row[] = l(t('Preview'), 'admin/structure/flexifilters/' . $id . '/preview', array(), drupal_get_destination());
       if ($show_disable_link) {
-        $row[] = l(t('Disable'), 'admin/build/flexifilters/' . $id . '/disable', array(), drupal_get_destination());
+        $row[] = l(t('Disable'), 'admin/structure/flexifilters/' . $id . '/disable', array(), drupal_get_destination());
       }
       elseif ($show_enable_link) {
-        $row[] = l(t('Enable'), 'admin/build/flexifilters/' . $id . '/enable', array(), drupal_get_destination());
+        $row[] = l(t('Enable'), 'admin/structure/flexifilters/' . $id . '/enable', array(), drupal_get_destination());
       }
       else {
         $row[] = '';
@@ -61,7 +61,7 @@ function flexifilter_filter_list_form_table($enabled) {
     }
   }
   if (count($rows)) {
-    return array('#value' => theme('table', $header, $rows, array('class' => 'flexifilters-list')));
+    return array('#value' => theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => 'flexifilters-list'))));
   }
   else {
     return array('#value' => t('None.'));
@@ -727,7 +727,7 @@ function flexifilter_filter_edit_form_submit($form, &$form_state) {
     if ($values['op'] == $values['submit2']) {
       unset($form_state['storage']);
       unset($form_state['rebuild']);
-      $form_state['redirect'] = 'admin/build/flexifilters/' . $fid . '/edit';
+      $form_state['redirect'] = 'admin/structure/flexifilters/' . $fid . '/edit';
     }
   }
   else {
@@ -736,7 +736,7 @@ function flexifilter_filter_edit_form_submit($form, &$form_state) {
   if ($values['op'] == $values['submit1']) {
     unset($form_state['storage']);
     unset($form_state['rebuild']);
-    $form_state['redirect'] = 'admin/build/flexifilters';
+    $form_state['redirect'] = 'admin/structure/flexifilters';
   }
 }
 
@@ -747,7 +747,7 @@ function flexifilter_filter_delete_form($form_state, $flexifilter) {
     '#value' => $flexifilter['id'],
   );
 
-  return confirm_form($form, t('Are you sure you want to delete the flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/build/flexifilters', t('This action cannot be undone.'), t('Delete'), t('Cancel'));
+  return confirm_form($form, t('Are you sure you want to delete the flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/structure/flexifilters', t('This action cannot be undone.'), t('Delete'), t('Cancel'));
 }
 
 function flexifilter_remove_from_filters($delta) {
@@ -765,7 +765,7 @@ function flexifilter_filter_delete_form_submit($form, &$form_state) {
   db_query('DELETE FROM {flexifilters_parts} WHERE fid = %d', $fid);
   db_query('DELETE FROM {flexifilters} WHERE fid = %d', $fid);
   drupal_set_message(t('Flexifilter deleted.'));
-  $form_state['redirect'] = 'admin/build/flexifilters';
+  $form_state['redirect'] = 'admin/structure/flexifilters';
 }
 
 function flexifilter_filter_disable_form($form_state, $flexifilter) {
@@ -775,7 +775,7 @@ function flexifilter_filter_disable_form($form_state, $flexifilter) {
     '#value' => $flexifilter['id'],
   );
 
-  return confirm_form($form, t('Are you sure you want to disable the flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/build/flexifilters', t('If you disable the flexifilter, then it cannot be used in any Input Formats.'), t('Disable'), t('Cancel'));
+  return confirm_form($form, t('Are you sure you want to disable the flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/structure/flexifilters', t('If you disable the flexifilter, then it cannot be used in any Input Formats.'), t('Disable'), t('Cancel'));
 }
 
 function flexifilter_filter_disable_form_submit($form, &$form_state) {
@@ -787,7 +787,7 @@ function flexifilter_filter_disable_form_submit($form, &$form_state) {
     db_query('UPDATE {flexifilters} SET enabled = 0 WHERE fid = %d', $fid);
     drupal_set_message(t('Flexifilter disabled.'));
   }
-  $form_state['redirect'] = 'admin/build/flexifilters';
+  $form_state['redirect'] = 'admin/structure/flexifilters';
 }
 
 function flexifilter_filter_enable_form($form_state, $flexifilter) {
@@ -797,7 +797,7 @@ function flexifilter_filter_enable_form($form_state, $flexifilter) {
     '#value' => $flexifilter['id'],
   );
 
-  return confirm_form($form, t('Are you sure you want to enable the flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/build/flexifilters', t(''), t('Enable'), t('Cancel'));
+  return confirm_form($form, t('Are you sure you want to enable the flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/structure/flexifilters', t(''), t('Enable'), t('Cancel'));
 }
 
 function flexifilter_filter_enable_form_submit($form, &$form_state) {
@@ -808,7 +808,7 @@ function flexifilter_filter_enable_form_submit($form, &$form_state) {
     db_query('UPDATE {flexifilters} SET enabled = 1, delta = %d WHERE fid = %d', flexifilter_get_unused_delta(), $fid);
     drupal_set_message(t('Flexifilter enabled.'));
   }
-  $form_state['redirect'] = 'admin/build/flexifilters';
+  $form_state['redirect'] = 'admin/structure/flexifilters';
 }
 
 function flexifilter_filter_export_form($form_state, $flexifilter) {
@@ -850,7 +850,7 @@ function flexifilter_filter_input_form($form_state) {
 function flexifilter_filter_input_form_submit($form, &$form_state) {
   $fid = unserialize($form_state['values']['flexifilter']);
   if ($fid) {
-    drupal_goto('admin/build/flexifilters/' . flexifilter_save_filter($form_state['values']['flexifilter']) . '/edit');
+    drupal_goto('admin/structure/flexifilters/' . flexifilter_save_filter($form_state['values']['flexifilter']) . '/edit');
   }
   else {
     drupal_set_message(t('It appears that the serialized flexifilter you entered was improperly formed. Please check the source.'), 'error');
@@ -892,7 +892,7 @@ function flexifilter_filter_default_form_submit($form, &$form_state) {
     }
   }
   flexifilter_install_flexifilters('flexifilter', $to_be_saved);
-  $form_state['redirect'] = 'admin/build/flexifilters';
+  $form_state['redirect'] = 'admin/structure/flexifilters';
 }
 
 function flexifilter_filter_preview_form($form_state, $flexifilter) {
