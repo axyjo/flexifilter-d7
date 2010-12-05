@@ -12,7 +12,7 @@
 function flexifilter_filter_list_form() {
   drupal_set_title(t('Flexifilters overview'));
   $path = drupal_get_path('module', 'flexifilter') . '/flexifilter.css';
-  drupal_add_css($path, 'module', 'all', FALSE);
+  drupal_add_css($path, array('preprocess' => FALSE));
 
   $form = array();
   $form['enabled_header'] = array(
