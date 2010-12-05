@@ -504,16 +504,30 @@ function flexifilter_save_filter($filter) {
   $advanced    = $filter['advanced'];
   $cache       = isset($filter['cache']) ? $filter['cache'] : 1;
   if ($fid === 'new') {
-    db_query("INSERT INTO {flexifilters} (label, description, enabled, delta, pid_root, advanced, cache) VALUES ('%s', '%s', 0, 0, 0, %d, %d)",
-      $label, $description, $advanced, $cache);
+    $id = db_insert('flexifilters')
+  ->fields(array(
+      'label' => $label,
+      'description' => $description,
+      'enabled' => 0,
+      'delta' => 0,
+      'pid_root' => 0,
+      'advanced' => $advanced,
+      'cache' => $cache,
+    ))
+  ->execute();
     $fid           = db_last_insert_id('flexifilters', 'fid');
     $pids_to_reuse = array();
     $pid_root      = _flexifilter_save_filter_components($filter['components'], $fid, $pids_to_reuse);
-    db_query('UPDATE {flexifilters} SET pid_root = %d WHERE fid = %d', $pid_root, $fid);
+    db_update('flexifilters')
+  ->fields(array(
+      'pid_root' => $pid_root,
+    ))
+  ->condition('fid', $fid)
+  ->execute();
   }
   else {
     $pids_to_reuse = array();
-    $result = db_query('SELECT pid FROM {flexifilters_parts} WHERE fid = %d', $fid);
+    $result = db_query('SELECT pid FROM {flexifilters_parts} WHERE fid = :fid', array(':fid' => $fid));
     while ($row = db_fetch_object($result)) {
       $pids_to_reuse[] = $row->pid;
     }
@@ -522,8 +536,16 @@ function flexifilter_save_filter($filter) {
     if (count($pids_to_reuse) > 0) {
       db_query('DELETE FROM {flexifilters_parts} WHERE pid = ' . implode($pids_to_reuse, ' OR pid = '), $fid);
     }
-    db_query("UPDATE {flexifilters} SET label = '%s', description = '%s', pid_root = %d, advanced = %d, cache = %d WHERE fid = %d",
-      $label, $description, $pid_root, $advanced, $cache, $fid);
+    db_update('flexifilters')
+  ->fields(array(
+      'label' => $label,
+      'description' => $description,
+      'pid_root' => $pid_root,
+      'advanced' => $advanced,
+      'cache' => $cache,
+    ))
+  ->condition('fid', $fid)
+  ->execute();
   }
   $existing_filters = flexifilter_get_filters(FALSE, TRUE);
   if (isset($existing_filters[$fid]['enabled']) && isset($filter['enabled'])) {
@@ -532,12 +554,23 @@ function flexifilter_save_filter($filter) {
         if (flexifilter_get_number_enabled_filters() < FLEXIFILTER_MAX_FILTERS) {
           $delta = flexifilter_get_unused_delta();
           if ($delta !== FALSE) {
-            db_query('UPDATE {flexifilters} SET enabled = 1, delta = %d WHERE fid = %d', $delta, $fid);
+            db_update('flexifilters')
+  ->fields(array(
+              'enabled' => 1,
+              'delta' => $delta,
+            ))
+  ->condition('fid', $fid)
+  ->execute();
           }
         }
       }
       else {
-        db_query('UPDATE {flexifilters} SET enabled = 0 WHERE fid = %d', $fid);
+        db_update('flexifilters')
+  ->fields(array(
+          'enabled' => 0,
+        ))
+  ->condition('fid', $fid)
+  ->execute();
       }
     }
   }
@@ -547,13 +580,28 @@ function flexifilter_save_filter($filter) {
 function _flexifilter_save_filter_components($components, $fid, &$pids_to_reuse, $parent = FALSE) {
   if ($parent === FALSE) {
     if ($reuse_pid = array_shift($pids_to_reuse)) {
-      db_query("UPDATE {flexifilters_parts} SET fid = %d, parent_pid = 0, type = %d, class_name = '', settings = '' WHERE pid = %d",
-        $fid, FLEXIFILTER_PART_TYPE_ROOT, $reuse_pid);
+      db_update('flexifilters_parts')
+  ->fields(array(
+        'fid' => $fid,
+        'parent_pid' => 0,
+        'type' => FLEXIFILTER_PART_TYPE_ROOT,
+        'class_name' => '',
+        'settings' => '',
+      ))
+  ->condition('pid', $reuse_pid)
+  ->execute();
       $parent = $reuse_pid;
     }
     else {
-      db_query("INSERT INTO {flexifilters_parts} (fid, parent_pid, type, class_name, settings) VALUES (%d, 0, %d, '', '')",
-        $fid, FLEXIFILTER_PART_TYPE_ROOT);
+     $id = db_insert('flexifilters_parts')
+  ->fields(array(
+        'fid' => $fid,
+        'parent_pid' => 0,
+        'type' => FLEXIFILTER_PART_TYPE_ROOT,
+        'class_name' => '',
+        'settings' => '',
+      ))
+  ->execute();
       $parent = db_last_insert_id('flexifilters_parts', 'pid');
     }
   }
@@ -568,12 +616,27 @@ function _flexifilter_save_filter_components($components, $fid, &$pids_to_reuse,
         unset($child['settings']['condition']);
       }
       if ($child_cid = array_shift($pids_to_reuse)) {
-        db_query("UPDATE {flexifilters_parts} SET fid = %d, parent_pid = %d, type = %d, class_name = '%s', settings = '%s' WHERE pid = %d",
-          $fid, $parent, FLEXIFILTER_PART_TYPE_COMPONENT, $child['class'], serialize($child['settings']), $child_cid);
+        db_update('flexifilters_parts')
+  ->fields(array(
+          'fid' => $fid,
+          'parent_pid' => $parent,
+          'type' => FLEXIFILTER_PART_TYPE_COMPONENT,
+          'class_name' => $child['class'],
+          'settings' => serialize($child['settings']),
+        ))
+  ->condition('pid', $child_cid)
+  ->execute();
       }
       else {
-        db_query("INSERT INTO {flexifilters_parts} (fid, parent_pid, type, class_name, settings) VALUES (%d, %d, %d, '%s', '%s')",
-          $fid, $parent, FLEXIFILTER_PART_TYPE_COMPONENT, $child['class'], serialize($child['settings']));
+        $id = db_insert('flexifilters_parts')
+  ->fields(array(
+          'fid' => $fid,
+          'parent_pid' => $parent,
+          'type' => FLEXIFILTER_PART_TYPE_COMPONENT,
+          'class_name' => $child['class'],
+          'settings' => serialize($child['settings']),
+        ))
+  ->execute();
         $child_cid = db_last_insert_id('flexifilters_parts', 'pid');
       }
       if (isset($child_components)) {
@@ -593,12 +656,27 @@ function _flexifilter_save_filter_condition($condition, $fid, &$pids_to_reuse, $
     unset($condition['settings']['conditions']);
   }
   if ($our_pid = array_shift($pids_to_reuse)) {
-    db_query("UPDATE {flexifilters_parts} SET fid = %d, parent_pid = %d, type = %d, class_name = '%s', settings = '%s' WHERE pid = %d",
-      $fid, $parent, FLEXIFILTER_PART_TYPE_CONDITION, $condition['class'], serialize($condition['settings']), $our_pid);
+    db_update('flexifilters_parts')
+  ->fields(array(
+      'fid' => $fid,
+      'parent_pid' => $parent,
+      'type' => FLEXIFILTER_PART_TYPE_CONDITION,
+      'class_name' => $condition['class'],
+      'settings' => serialize($condition['settings']),
+    ))
+  ->condition('pid', $our_pid)
+  ->execute();
   }
   else {
-    db_query("INSERT INTO {flexifilters_parts} (fid, parent_pid, type, class_name, settings) VALUES (%d, %d, %d, '%s', '%s')",
-      $fid, $parent, FLEXIFILTER_PART_TYPE_CONDITION, $condition['class'], serialize($condition['settings']));
+    $id = db_insert('flexifilters_parts')
+  ->fields(array(
+      'fid' => $fid,
+      'parent_pid' => $parent,
+      'type' => FLEXIFILTER_PART_TYPE_CONDITION,
+      'class_name' => $condition['class'],
+      'settings' => serialize($condition['settings']),
+    ))
+  ->execute();
     $our_pid = db_last_insert_id('flexifilters_parts', 'pid');
   }
   if (isset($condition_conditions)) {
@@ -617,7 +695,7 @@ function flexifilter_get_filter_by_delta($delta, $reset = FALSE) {
     $cache = array();
   }
   if (!isset($cache[$delta]) || $reset) {
-    $result = db_query('SELECT * FROM {flexifilters} WHERE enabled = 1 AND delta = %d', $delta);
+    $result = db_query('SELECT * FROM {flexifilters} WHERE enabled = :enabled AND delta = :delta', array(':enabled' => 1, ':delta' => $delta));
     if ($row = db_fetch_object($result)) {
       $cache[$delta] = _flexifilter_filter_from_db_row($row, TRUE);
     }
@@ -646,7 +724,7 @@ function _flexifilter_filter_from_db_row($row, $include_components) {
 
   if ($include_components) {
     // Fetch all the parts of the filter and store them in a flat array
-    $result             = db_query('SELECT * FROM {flexifilters_parts} WHERE fid = %d', $row->fid);
+    $result             = db_query('SELECT * FROM {flexifilters_parts} WHERE fid = :fid', array(':fid' => $row->fid));
     $components_flat    = array();
     $component_children = array();
     $id_next            = 0;

@@ -660,25 +660,55 @@ function flexifilter_filter_edit_form_components_from_data($data, $data_base = N
 function flexifilter_filter_edit_form_submit_components($data, $fid, &$pids_to_reuse, $parent = FALSE) {
   if ($parent === FALSE) {
     if ($reuse_pid = array_shift($pids_to_reuse)) {
-      db_query("UPDATE {flexifilters_parts} SET fid = %d, parent_pid = 0, type = %d, class_name = '', settings = '' WHERE pid = %d",
-        $fid, FLEXIFILTER_PART_TYPE_ROOT, $reuse_pid);
+      db_update('flexifilters_parts')
+  ->fields(array(
+        'fid' => $fid,
+        'parent_pid' => 0,
+        'type' => FLEXIFILTER_PART_TYPE_ROOT,
+        'class_name' => '',
+        'settings' => '',
+      ))
+  ->condition('pid', $reuse_pid)
+  ->execute();
       $parent = $reuse_pid;
     }
     else {
-      db_query("INSERT INTO {flexifilters_parts} (fid, parent_pid, type, class_name, settings) VALUES (%d, 0, %d, '', '')",
-        $fid, FLEXIFILTER_PART_TYPE_ROOT);
+      $id = db_insert('flexifilters_parts')
+  ->fields(array(
+        'fid' => $fid,
+        'parent_pid' => 0,
+        'type' => FLEXIFILTER_PART_TYPE_ROOT,
+        'class_name' => '',
+        'settings' => '',
+      ))
+  ->execute();
       $parent = db_last_insert_id('flexifilters_parts', 'pid');
     }
   }
   foreach ($data as $key => $child) {
     if (is_numeric($key)) {
       if ($child_cid = array_shift($pids_to_reuse)) {
-        db_query("UPDATE {flexifilters_parts} SET fid = %d, parent_pid = %d, type = %d, class_name = '%s', settings = '%s' WHERE pid = %d",
-          $fid, $parent, FLEXIFILTER_PART_TYPE_COMPONENT, $child['class'], serialize($child['settings']), $child_cid);
+        db_update('flexifilters_parts')
+  ->fields(array(
+          'fid' => $fid,
+          'parent_pid' => $parent,
+          'type' => FLEXIFILTER_PART_TYPE_COMPONENT,
+          'class_name' => $child['class'],
+          'settings' => serialize($child['settings']),
+        ))
+  ->condition('pid', $child_cid)
+  ->execute();
       }
       else {
-        db_query("INSERT INTO {flexifilters_parts} (fid, parent_pid, type, class_name, settings) VALUES (%d, %d, %d, '%s', '%s')",
-          $fid, $parent, FLEXIFILTER_PART_TYPE_COMPONENT, $child['class'], serialize($child['settings']));
+        $id = db_insert('flexifilters_parts')
+  ->fields(array(
+          'fid' => $fid,
+          'parent_pid' => $parent,
+          'type' => FLEXIFILTER_PART_TYPE_COMPONENT,
+          'class_name' => $child['class'],
+          'settings' => serialize($child['settings']),
+        ))
+  ->execute();
         $child_cid = db_last_insert_id('flexifilters_parts', 'pid');
       }
       if (isset($child['components'])) {
@@ -692,14 +722,30 @@ function flexifilter_filter_edit_form_submit_components($data, $fid, &$pids_to_r
   return $parent;
 }
 
+
 function flexifilter_filter_edit_form_submit_condition($data, $fid, &$pids_to_reuse, $parent) {
   if ($our_pid = array_shift($pids_to_reuse)) {
-    db_query("UPDATE {flexifilters_parts} SET fid = %d, parent_pid = %d, type = %d, class_name = '%s', settings = '%s' WHERE pid = %d",
-      $fid, $parent, FLEXIFILTER_PART_TYPE_CONDITION, $data['class'], serialize($data['settings']), $our_pid);
+    db_update('flexifilters_parts')
+  ->fields(array(
+      'fid' => $fid,
+      'parent_pid' => $parent,
+      'type' => FLEXIFILTER_PART_TYPE_CONDITION,
+      'class_name' => $data['class'],
+      'settings' => serialize($data['settings']),
+    ))
+  ->condition('pid', $our_pid)
+  ->execute();
   }
   else {
-    db_query("INSERT INTO {flexifilters_parts} (fid, parent_pid, type, class_name, settings) VALUES (%d, %d, %d, '%s', '%s')",
-      $fid, $parent, FLEXIFILTER_PART_TYPE_CONDITION, $data['class'], serialize($data['settings']));
+    $id = db_insert('flexifilters_parts')
+  ->fields(array(
+      'fid' => $fid,
+      'parent_pid' => $parent,
+      'type' => FLEXIFILTER_PART_TYPE_CONDITION,
+      'class_name' => $data['class'],
+      'settings' => serialize($data['settings']),
+    ))
+  ->execute();
     $our_pid = db_last_insert_id('flexifilters_parts', 'pid');
   }
   if (isset($data['conditions'])) {
@@ -751,7 +797,10 @@ function flexifilter_filter_delete_form($form_state, $flexifilter) {
 }
 
 function flexifilter_remove_from_filters($delta) {
-  db_query("DELETE FROM {filters} WHERE module = 'flexifilter' AND delta = %d", $delta);
+  db_delete('filters')
+  ->condition('module', 'flexifilter')
+  ->condition('delta', $delta)
+  ->execute();
   cache_clear_all('*', 'cache_filter', TRUE);
 }
 
