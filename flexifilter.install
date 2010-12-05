@@ -10,8 +10,6 @@
  * Implements hook_install().
  */
 function flexifilter_install() {
-  drupal_install_schema('flexifilter');
-  require_once drupal_get_path('module', 'flexifilter') . '/flexifilter.module';
   flexifilter_install_flexifilters('flexifilter');
 }
 
@@ -19,7 +17,6 @@ function flexifilter_install() {
  * Implements hook_uninstall().
  */
 function flexifilter_uninstall() {
-  drupal_uninstall_schema('flexifilter');
 }
 
 /**
@@ -32,7 +29,7 @@ function flexifilter_schema() {
     'description' => 'Holds definitions for flexifilters.',
     'fields' => array(
       'fid' => array(
-        'description' => 'The primary identifier for a flexifilter.',
+        'description' => 'The primary identifier for a Flexifilter.',
         'type' => 'serial',
         'unsigned' => TRUE,
         'not null' => TRUE,
@@ -55,7 +52,7 @@ function flexifilter_schema() {
         'size' => 'tiny',
         'not null' => TRUE,
         'default' => 0,
-        'description' => '1 if the flexifilter is enabled, 0 otherwise',
+        'description' => '1 if the Flexifilter is enabled, 0 otherwise',
         'disp-width' => '3',
       ),
       'delta' => array(
@@ -70,7 +67,7 @@ function flexifilter_schema() {
         'unsigned' => TRUE,
         'not null' => FALSE,
         'disp-width' => '10',
-        'description' => 'ID of a faux flexifilter part used as a parent for the root level components',
+        'description' => 'ID of a faux Flexifilter part used as a parent for the root level components',
       ),
       'advanced' => array(
         'type' => 'int',
@@ -78,7 +75,7 @@ function flexifilter_schema() {
         'size' => 'tiny',
         'not null' => TRUE,
         'disp-width' => '3',
-        'description' => '1 if the flexifilter admin interface should display advanced settings for this flexifilter, 0 otherwise',
+        'description' => '1 if the Flexifilter admin interface should display advanced settings for this Flexifilter, 0 otherwise',
       ),
       'cache' => array(
         'type' => 'int',
@@ -86,7 +83,7 @@ function flexifilter_schema() {
         'size' => 'tiny',
         'not null' => TRUE,
         'default' => 0,
-        'description' => '1 if the flexifilter has caching enabled, 0 otherwise. Used for dynamic filters.',
+        'description' => '1 if the Flexifilter has caching enabled, 0 otherwise. Used for dynamic filters.',
       ),
     ),
     'primary key' => array('fid'),
@@ -96,28 +93,28 @@ function flexifilter_schema() {
   );
 
   $schema['flexifilters_parts'] = array(
-    'description' => 'Holds definitions for individual flexifilter parts (components and conditions).',
+    'description' => 'Holds definitions for individual Flexifilter parts (components and conditions).',
     'fields' => array(
       'pid' => array(
         'type' => 'serial',
         'unsigned' => TRUE,
         'not null' => TRUE,
         'disp-width' => '10',
-        'description' => 'Primary identifier for a flexifilter part.',
+        'description' => 'Primary identifier for a Flexifilter part.',
       ),
       'fid' => array(
         'type' => 'int',
         'unsigned' => TRUE,
         'not null' => TRUE,
         'disp-width' => '10',
-        'description' => 'ID of the flexifilter containing this part.',
+        'description' => 'ID of the Flexifilter containing this part.',
       ),
       'parent_pid' => array(
         'type' => 'int',
         'unsigned' => TRUE,
         'not null' => FALSE,
         'disp-width' => '10',
-        'description' => 'ID of the flexifilter part that directly contains this part.',
+        'description' => 'ID of the Flexifilter part that directly contains this part.',
       ),
       'type' => array(
         'type' => 'int',
