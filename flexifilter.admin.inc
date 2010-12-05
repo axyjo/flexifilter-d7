@@ -10,7 +10,7 @@
  * Generates the form for the admin overview page
  */
 function flexifilter_filter_list_form() {
-  drupal_set_title("Flexifilters overview");
+  drupal_set_title(t('Flexifilters overview'));
   $path = drupal_get_path('module', 'flexifilter') . '/flexifilter.css';
   drupal_add_css($path, 'module', 'all', FALSE);
 
