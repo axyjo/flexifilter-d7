@@ -673,7 +673,7 @@ function flexifilter_filter_edit_form_submit_components($data, $fid, &$pids_to_r
       $parent = $reuse_pid;
     }
     else {
-      $id = db_insert('flexifilters_parts')
+      $parent = db_insert('flexifilters_parts')
   ->fields(array(
         'fid' => $fid,
         'parent_pid' => 0,
@@ -682,7 +682,6 @@ function flexifilter_filter_edit_form_submit_components($data, $fid, &$pids_to_r
         'settings' => '',
       ))
   ->execute();
-      $parent = db_last_insert_id('flexifilters_parts', 'pid');
     }
   }
   foreach ($data as $key => $child) {
@@ -700,7 +699,7 @@ function flexifilter_filter_edit_form_submit_components($data, $fid, &$pids_to_r
   ->execute();
       }
       else {
-        $id = db_insert('flexifilters_parts')
+        $child_cid = db_insert('flexifilters_parts')
   ->fields(array(
           'fid' => $fid,
           'parent_pid' => $parent,
@@ -709,7 +708,6 @@ function flexifilter_filter_edit_form_submit_components($data, $fid, &$pids_to_r
           'settings' => serialize($child['settings']),
         ))
   ->execute();
-        $child_cid = db_last_insert_id('flexifilters_parts', 'pid');
       }
       if (isset($child['components'])) {
         flexifilter_filter_edit_form_submit_components($child['components'], $fid, $pids_to_reuse, $child_cid);
@@ -736,7 +734,7 @@ function flexifilter_filter_edit_form_submit_condition($data, $fid, &$pids_to_re
   ->execute();
   }
   else {
-    $id = db_insert('flexifilters_parts')
+    $our_pid = db_insert('flexifilters_parts')
   ->fields(array(
       'fid' => $fid,
       'parent_pid' => $parent,
@@ -745,7 +743,6 @@ function flexifilter_filter_edit_form_submit_condition($data, $fid, &$pids_to_re
       'settings' => serialize($data['settings']),
     ))
   ->execute();
-    $our_pid = db_last_insert_id('flexifilters_parts', 'pid');
   }
   if (isset($data['conditions'])) {
     foreach ($data['conditions'] as $condition) {

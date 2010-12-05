@@ -504,7 +504,7 @@ function flexifilter_save_filter($filter) {
   $advanced    = $filter['advanced'];
   $cache       = isset($filter['cache']) ? $filter['cache'] : 1;
   if ($fid === 'new') {
-    $id = db_insert('flexifilters')
+    $fid = db_insert('flexifilters')
   ->fields(array(
       'label' => $label,
       'description' => $description,
@@ -515,7 +515,6 @@ function flexifilter_save_filter($filter) {
       'cache' => $cache,
     ))
   ->execute();
-    $fid           = db_last_insert_id('flexifilters', 'fid');
     $pids_to_reuse = array();
     $pid_root      = _flexifilter_save_filter_components($filter['components'], $fid, $pids_to_reuse);
     db_update('flexifilters')
@@ -593,7 +592,7 @@ function _flexifilter_save_filter_components($components, $fid, &$pids_to_reuse,
       $parent = $reuse_pid;
     }
     else {
-     $id = db_insert('flexifilters_parts')
+     $parent = db_insert('flexifilters_parts')
   ->fields(array(
         'fid' => $fid,
         'parent_pid' => 0,
@@ -602,7 +601,6 @@ function _flexifilter_save_filter_components($components, $fid, &$pids_to_reuse,
         'settings' => '',
       ))
   ->execute();
-      $parent = db_last_insert_id('flexifilters_parts', 'pid');
     }
   }
   foreach ($components as $key => $child) {
