@@ -2,10 +2,10 @@
 name = Flexifilter
 description = Allows creatation of flexible input filters entirely through the user interface.
 package = Flexifilter
-core = 6.x
-files[] = flexifilter.install
-files[] = flexifilter.module
+core = 7.x
 files[] = flexifilter.admin.inc
 files[] = flexifilter.components.inc
 files[] = flexifilter.conditions.inc
 files[] = flexifilter.flexifilters.inc
+files[] = flexifilter.install
+files[] = flexifilter.module
