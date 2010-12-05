@@ -278,9 +278,7 @@ function flexifilter_filter_edit_form_condition($data, $show_advanced) {
       $form['op_c'] = array(
         '#type' => 'submit',
         '#value' => t('Add'),
-        '#process' => array('flexifilter_undo_submit_default_name', 'form_process_ahah
-
-'),
+        '#process' => array('flexifilter_undo_submit_default_name'),
       );
       // Add some kind of seperator, otherwise this add button and the remove button are put onto the same line
       // which is just a little bit confusing to the user. Hence we use a horizontal rule to seperate them alot.
@@ -293,9 +291,7 @@ function flexifilter_filter_edit_form_condition($data, $show_advanced) {
   $form['op'] = array(
     '#type' => 'submit',
     '#value' => t('Remove condition'),
-    '#process' => array('flexifilter_undo_submit_default_name', 'form_process_ahah
-
-'),
+    '#process' => array('flexifilter_undo_submit_default_name'),
   );
 
   return $form;
@@ -361,9 +357,7 @@ function flexifilter_filter_edit_form_component($data, $new_weight, $is_first, $
       $form['op_c'] = array(
         '#type' => 'submit',
         '#value' => t('Change'),
-        '#process' => array('flexifilter_undo_submit_default_name', 'form_process_ahah
-
-'),
+        '#process' => array('flexifilter_undo_submit_default_name'),
       );
     }
     if ($component['contains_components']) {
@@ -413,9 +407,7 @@ function flexifilter_filter_edit_form_component($data, $new_weight, $is_first, $
   $form['op'] = array(
     '#type' => 'submit',
     '#value' => t('Re/move'),
-    '#process' => array('flexifilter_undo_submit_default_name', 'form_process_ahah
-
-'),
+    '#process' => array('flexifilter_undo_submit_default_name'),
   );
 
   return $form;
@@ -503,9 +495,7 @@ function flexifilter_filter_edit_form_components($data, &$data_base, $show_advan
   $form['op'] = array(
     '#type' => 'submit',
     '#value' => t('Add'),
-    '#process' => array('flexifilter_undo_submit_default_name', 'form_process_ahah
-
-'),
+    '#process' => array('flexifilter_undo_submit_default_name'),
   );
   return $form;
 }
