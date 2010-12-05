@@ -149,7 +149,7 @@ function flexifilter_condition_text_length($op, $settings, $text) {
 
     case 'prepare':
     case 'process':
-      $length   = strlen($text);
+      $length   = drupal_strlen($text);
       $operator = isset($settings['operator']) ? $settings['operator'] : 0;
       $num      = isset($settings['num']) ? $settings['num'] : variable_get('teaser_length', 600);;
       switch ($operator) {

@@ -433,7 +433,7 @@ function flexifilter_component_text_pattern_replace($op, $settings, $text) {
  * Cannot use str_replace with $count because Drupal supports PHP 4.
  */
 function flexifilter_component_text_pattern_replace_once($pos, $search, $replace, $subject) {
-  return substr($subject, 0, $pos) . $replace . substr($subject, $pos + strlen($search));
+  return drupal_substr($subject, 0, $pos) . $replace . drupal_substr($subject, $pos + drupal_strlen($search));
 }
 
 /**
@@ -493,21 +493,21 @@ function flexifilter_component_chunk_grab($op, $settings, $text) {
       while ($pos !== FALSE && $endpos !== FALSE) {
         $pos = $case_sensitive ? strpos($text, $start) : stripos($text, $start);
         if ($include_rest) {
-          $tmp = substr($text, 0, $pos);
+          $tmp = drupal_substr($text, 0, $pos);
         }
         if ($pos !== FALSE) {
           $endpos = $case_sensitive ? strpos($text, $end) : stripos($text, $end);
           if ($endpos !== FALSE) {
             if ($include_rest) {
-              $tmp2 = substr($text, $endpos + strlen($end));
+              $tmp2 = drupal_substr($text, $endpos + drupal_strlen($end));
             }
             if ($pass_limits) {
-              $endpos = $endpos + strlen($end);
+              $endpos = $endpos + drupal_strlen($end);
             }
             else {
-              $pos = $pos + strlen($start);
+              $pos = $pos + drupal_strlen($start);
             }
-            $chunk = substr($text, $pos, $endpos - $pos);
+            $chunk = drupal_substr($text, $pos, $endpos - $pos);
             $tmp .= flexifilter_invoke_components($settings['components'], $op, $chunk);
             $tmp .= $tmp2;
             $text = $tmp;
@@ -600,9 +600,9 @@ function flexifilter_component_text_substr($op, $settings, $text) {
       $substr_start = isset($settings['substr_start']) ? $settings['substr_start'] : '0';
       $substr_length = isset($settings['substr_length']) ? $settings['substr_length'] : '';
       if ($substr_length === '') {
-        return substr($text, $substr_start);
+        return drupal_substr($text, $substr_start);
       }
-      return substr($text, $substr_start, $substr_length);
+      return drupal_substr($text, $substr_start, $substr_length);
   }
 }
 
@@ -700,7 +700,7 @@ function flexifilter_component_sequences($op, $settings, $text) {
 
 function flexifilter_sequences_replace_once($search, $replace, &$subject) {
   if (($pos = strpos($subject, $search)) !== FALSE) {
-    $subject = substr($subject, 0, $pos) . $replace . substr($subject, $pos + strlen($search));
+    $subject = drupal_substr($subject, 0, $pos) . $replace . drupal_substr($subject, $pos + drupal_strlen($search));
     return TRUE;
   }
   return FALSE;
@@ -725,7 +725,7 @@ function flexifilter_sequence_numbers($num) {
 }
 
 function flexifilter_sequence_letters_uc($num) {
-  return strtoupper(flexifilter_sequence_letters_lc($num));
+  return drupal_strtoupper(flexifilter_sequence_letters_lc($num));
 }
 
 function flexifilter_sequence_letters_lc($num) {

@@ -428,7 +428,7 @@ function flexifilter_filter_edit_form_components($data, &$data_base, $show_advan
   );
   $components = array();
   foreach ($data as $key => $component) {
-    if (strncmp($key, $data_base['id_prefix'], strlen($data_base['id_prefix'])) == 0) {
+    if (strncmp($key, $data_base['id_prefix'], drupal_strlen($data_base['id_prefix'])) == 0) {
       $components[$key] = $component;
     }
   }
@@ -617,7 +617,7 @@ function flexifilter_filter_edit_form_components_from_data($data, $data_base = N
     $components['id_next'] = $data_base['id_next'];
   }
   foreach ($data as $key => $data_us) {
-    if (strncmp($key, $data_base['id_prefix'], strlen($data_base['id_prefix'])) == 0) {
+    if (strncmp($key, $data_base['id_prefix'], drupal_strlen($data_base['id_prefix'])) == 0) {
       $component = array(
         'class' => $data_us['class'],
         'settings' => array(),
@@ -922,12 +922,12 @@ function flexifilter_filter_preview_form($form_state, $flexifilter) {
       $form[$data['step']][$key . $uniqid]['step'] = array(
         '#type' => 'markup',
         '#prefix' => '<div class="' . $zebra . '"><div class="description">',
-        '#value' => t('@type: @class<p>Settings:<br />!settings</p>', array('@type' => ucfirst($data['type']), '@class' => $data['class'], '!settings' => $settings)),
+        '#value' => t('@type: @class<p>Settings:<br />!settings</p>', array('@type' => drupal_ucfirst($data['type']), '@class' => $data['class'], '!settings' => $settings)),
         '#suffix' => '</div>',
       );
       $form[$data['step']][$key . $uniqid]['text'] = array(
         '#type' => 'markup',
-        '#title' => ucfirst($data['type']) . ': ' . $data['class'],
+        '#title' => drupal_ucfirst($data['type']) . ': ' . $data['class'],
         '#description' => t('Settings:<br />!settings', array('!settings' => $settings)),
         '#value' => $data['value'] . '</div><strong>' . t('With visible HTML:') . '</strong><div class="flexifilter-plain-text">' . check_plain($data['value']),
         '#prefix' => '<strong>' . t('As it appears to users:') . '</strong><div class="flexifilter-text">',

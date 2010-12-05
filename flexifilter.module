@@ -424,9 +424,9 @@ function flexifilter_filter_tips($delta, $format, $long = FALSE) {
   else {
     $pos = strpos($flexifilter['description'], '<!--break-->');
     if ($pos === FALSE) {
-      return substr($flexifilter['description'], 0);
+      return drupal_substr($flexifilter['description'], 0);
     }
-    return substr($flexifilter['description'], 0, $pos);
+    return drupal_substr($flexifilter['description'], 0, $pos);
   }
 }
 
