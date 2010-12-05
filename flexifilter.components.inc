@@ -134,7 +134,7 @@ function flexifilter_flexifilter_components() {
       $list = module_invoke($module, 'filter', 'list');
       if (isset($list) && is_array($list)) {
         foreach ($list as $delta => $name) {
-          $components['flexifilter_existing__'. $module .'__filter__'. $delta] = array(
+          $components['flexifilter_existing__' . $module . '__filter__' . $delta] = array(
             'label' => $name,
             'description' => module_invoke($module, 'filter', 'description', $delta),
             'callback' => 'flexifilter_existing_filter_as_component',
@@ -149,7 +149,7 @@ function flexifilter_flexifilter_components() {
 
   // Allow existing flexifilters to be used as components
   foreach (flexifilter_get_filters(FALSE) as $fid => $filter) {
-    $components['flexifilter_existing_flexifilter__'. $fid] = array(
+    $components['flexifilter_existing_flexifilter__' . $fid] = array(
       'label' => $filter['label'],
       'description' => $filter['description'],
       'callback' => 'flexifilter_existing_flexifilter_as_component',
@@ -217,7 +217,7 @@ function flexifilter_component_text_regex_replace($op, $settings, $text = '') {
 
     case 'prepare':
     case 'process':
-      return preg_replace('~'. str_replace('~', '\~', $settings['find']) .'~', isset($settings['replace']) ? $settings['replace'] : '', $text);
+      return preg_replace('~' . str_replace('~', '\~', $settings['find']) . '~', isset($settings['replace']) ? $settings['replace'] : '', $text);
   }
   return $text;
 }

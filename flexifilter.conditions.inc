@@ -104,7 +104,7 @@ function flexifilter_condition_text_search($op, $settings, $text) {
     case 'prepare':
     case 'process':
       if (isset($settings['is_regex']) && $settings['is_regex'] == 1) {
-        return preg_match('~'. str_replace('~', '\~', $settings['find']) .'~', $text) == 1;
+        return preg_match('~' . str_replace('~', '\~', $settings['find']) . '~', $text) == 1;
       }
       else {
         return strpos($text, $settings['find']) !== FALSE;

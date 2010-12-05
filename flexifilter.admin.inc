@@ -6,19 +6,19 @@
  */
 function flexifilter_filter_list_form() {
   drupal_set_title("Flexifilters overview");
-  $path = drupal_get_path('module', 'flexifilter') .'/flexifilter.css';
+  $path = drupal_get_path('module', 'flexifilter') . '/flexifilter.css';
   drupal_add_css($path, 'module', 'all', FALSE);
 
   $form = array();
   $form['enabled_header'] = array(
-    '#value' => '<h3>'. t('Enabled Flexifilters') .'</h3>',
-    '#suffix' => t('If a flexifilter is enabled, then it can be used within input formats, however there can only be 128 enabled at any one time.') .'<br/>',
+    '#value' => '<h3>' . t('Enabled Flexifilters') . '</h3>',
+    '#suffix' => t('If a flexifilter is enabled, then it can be used within input formats, however there can only be 128 enabled at any one time.') . '<br/>',
   );
   $form['enabled'] = flexifilter_filter_list_form_table(TRUE);
 
   $form['disabled_header'] = array(
-    '#value' => '<h3>'. t('Disabled Flexifilters') .'</h3>',
-    '#suffix' => t('If a flexifilter is disabled, then it cannot be used within input formats, although it can be used within other flexifilters.') .'<br/>',
+    '#value' => '<h3>' . t('Disabled Flexifilters') . '</h3>',
+    '#suffix' => t('If a flexifilter is disabled, then it cannot be used within input formats, although it can be used within other flexifilters.') . '<br/>',
   );
   $form['disabled'] = flexifilter_filter_list_form_table(FALSE);
 
@@ -40,14 +40,14 @@ function flexifilter_filter_list_form_table($enabled) {
   foreach ($filters as $id => $filter) {
     if ($filter['enabled'] == $enabled) {
       $row   = array($filter['label'], $filter['description']);
-      $row[] = l(t('Edit'), 'admin/build/flexifilters/'. $id .'/edit', array(), drupal_get_destination());
-      $row[] = l(t('Delete'), 'admin/build/flexifilters/'. $id .'/delete', array(), drupal_get_destination());
-      $row[] = l(t('Preview'), 'admin/build/flexifilters/'. $id .'/preview', array(), drupal_get_destination());  
+      $row[] = l(t('Edit'), 'admin/build/flexifilters/' . $id . '/edit', array(), drupal_get_destination());
+      $row[] = l(t('Delete'), 'admin/build/flexifilters/' . $id . '/delete', array(), drupal_get_destination());
+      $row[] = l(t('Preview'), 'admin/build/flexifilters/' . $id . '/preview', array(), drupal_get_destination());  
       if ($show_disable_link) {
-        $row[] = l(t('Disable'), 'admin/build/flexifilters/'. $id .'/disable', array(), drupal_get_destination());
+        $row[] = l(t('Disable'), 'admin/build/flexifilters/' . $id . '/disable', array(), drupal_get_destination());
       }
       else if ($show_enable_link) {
-        $row[] = l(t('Enable'), 'admin/build/flexifilters/'. $id .'/enable', array(), drupal_get_destination());
+        $row[] = l(t('Enable'), 'admin/build/flexifilters/' . $id . '/enable', array(), drupal_get_destination());
       }
       else {
         $row[] = '';
@@ -83,10 +83,10 @@ function flexifilter_undo_submit_default_name($form) {
     // To make it easier to handle $_FILES in file.inc, we place all
     // file fields in the 'files' array. Also, we do not support
     // nested file names.
-    $form['#name'] = 'files['. $form['#name'] .']';
+    $form['#name'] = 'files[' . $form['#name'] . ']';
   }
   elseif (count($form['#parents'])) {
-    $form['#name'] .= '['. implode('][', $form['#parents']) .']';
+    $form['#name'] .= '[' . implode('][', $form['#parents']) . ']';
   }
   array_unshift($form['#parents'], $name);
   return $form;
@@ -103,11 +103,11 @@ function flexifilter_filter_edit_condition_data($data) {
   foreach ($data['settings'] as $key => $value) {
     if ($key == 'conditions') {
       foreach ($value as $cond_key => $cond_value) {
-        $condition['condition_'. $cond_key] = flexifilter_filter_edit_condition_data($cond_value);
+        $condition['condition_' . $cond_key] = flexifilter_filter_edit_condition_data($cond_value);
       }
     }
     else {
-      $condition['setting_'. $key] = $value;
+      $condition['setting_' . $key] = $value;
     }
   }
   return $condition;
@@ -141,7 +141,7 @@ function flexifilter_filter_edit_components_data($components, $id_prefix = NULL)
         $us[$key] = $value;
       }
       else {
-        $us['setting_'. $key] = $value;
+        $us['setting_' . $key] = $value;
       }
     }
     $us['weight'] = $n;
@@ -235,7 +235,7 @@ function flexifilter_filter_edit_form_condition($data, $show_advanced) {
   $custom_elements = flexifilter_invoke_condition(array('class' => $data['class'], 'settings' => $custom_settings), 'settings');
   if (is_array($custom_elements)) {
     foreach ($custom_elements as $key => $element) {
-      $form['setting_'. $key] = $element;
+      $form['setting_' . $key] = $element;
     }
   }
   if ($condition['is_container']) {
@@ -255,7 +255,7 @@ function flexifilter_filter_edit_form_condition($data, $show_advanced) {
         }
       }
       if (isset($data['op_c'])) {
-        $form['condition_'. $condition_max_id] = flexifilter_filter_edit_form_condition(flexifilter_filter_edit_form_new_condition_data($data['add_condition']), $show_advanced);
+        $form['condition_' . $condition_max_id] = flexifilter_filter_edit_form_condition(flexifilter_filter_edit_form_new_condition_data($data['add_condition']), $show_advanced);
       }
 
       $form['add_condition'] = array(
@@ -315,7 +315,7 @@ function flexifilter_filter_edit_form_component($data, $new_weight, $is_first, $
   $custom_elements = flexifilter_invoke_component($component, 'settings', $custom_settings);
   if (is_array($custom_elements)) {
     foreach ($custom_elements as $key => $element) {
-      $form['setting_'. $key] = $element;
+      $form['setting_' . $key] = $element;
     }
   }
   if ($component['is_container']) {
@@ -500,7 +500,7 @@ function flexifilter_filter_edit_form($form_state, $flexifilter = 'new') {
     $data['basic']['cache'] = $flexifilter === 'new' ? 1 : $flexifilter['cache'];
     $data['components'] = $flexifilter === 'new' ? array() : flexifilter_filter_edit_components_data($flexifilter['components']);
     if (!isset($data['components']['id_prefix']) || $data['components']['id_prefix'] === 'component_new_') {
-      $data['components']['id_prefix'] = 'component_'. $data['fid'] .'_';
+      $data['components']['id_prefix'] = 'component_' . $data['fid'] . '_';
     }
     if (!isset($data['components']['id_next'])) {
       $data['components']['id_next'] = 0;
@@ -707,7 +707,7 @@ function flexifilter_filter_edit_form_submit($form, &$form_state) {
     if ($values['op'] == $values['submit2']) {
       unset($form_state['storage']);
       unset($form_state['rebuild']);
-      $form_state['redirect'] = 'admin/build/flexifilters/'. $fid .'/edit';
+      $form_state['redirect'] = 'admin/build/flexifilters/' . $fid . '/edit';
     }
   }
   else {
@@ -821,7 +821,7 @@ function flexifilter_filter_input_form($form_state) {
 function flexifilter_filter_input_form_submit($form, &$form_state) { 
   $fid = unserialize($form_state['values']['flexifilter']);
   if ($fid) {
-    drupal_goto('admin/build/flexifilters/'. flexifilter_save_filter($form_state['values']['flexifilter']) .'/edit');
+    drupal_goto('admin/build/flexifilters/' . flexifilter_save_filter($form_state['values']['flexifilter']) . '/edit');
   }
   else {
     drupal_set_message(t('It appears that the serialized flexifilter you entered was improperly formed. Please check the source.'), 'error');
@@ -907,25 +907,25 @@ function flexifilter_filter_preview_form($form_state, $flexifilter) {
       '#value' => $flexifilter,
     );
     $zebra = 'flexifilter-even';
-    drupal_add_css(drupal_get_path('module', 'flexifilter') .'/flexifilter.css');
+    drupal_add_css(drupal_get_path('module', 'flexifilter') . '/flexifilter.css');
     foreach ($form_state['storage']['data'] as $key => $data) {
       $settings = '';
       foreach ($data['settings'] as $key => $value) {
-        $settings .= '<strong>'. check_plain($key) .'</strong>: '. check_plain(''. $value) ."<br />";
+        $settings .= '<strong>' . check_plain($key) . '</strong>: ' . check_plain('' . $value) . "<br />";
       }
       $uniqid = uniqid();
       $form[$data['step']][$key . $uniqid]['step'] = array(
         '#type' => 'markup',
-        '#prefix' => '<div class="'. $zebra .'"><div class="description">',
+        '#prefix' => '<div class="' . $zebra . '"><div class="description">',
         '#value' => t('@type: @class<p>Settings:<br />!settings</p>', array('@type' => ucfirst($data['type']), '@class' => $data['class'], '!settings' => $settings)),
         '#suffix' => '</div>',
       );
       $form[$data['step']][$key . $uniqid]['text'] = array(
         '#type' => 'markup',
-        '#title' => ucfirst($data['type']) .': '. $data['class'],
+        '#title' => ucfirst($data['type']) . ': ' . $data['class'],
         '#description' => t('Settings:<br />!settings', array('!settings' => $settings)),
-        '#value' => $data['value'] . '</div><strong>'. t('With visible HTML:') .'</strong><div class="flexifilter-plain-text">'. check_plain($data['value']),
-        '#prefix' => '<strong>'. t('As it appears to users:') .'</strong><div class="flexifilter-text">',
+        '#value' => $data['value'] . '</div><strong>' . t('With visible HTML:') . '</strong><div class="flexifilter-plain-text">' . check_plain($data['value']),
+        '#prefix' => '<strong>' . t('As it appears to users:') . '</strong><div class="flexifilter-text">',
         '#suffix' => '</div></div>',
       );
       $zebra = ($zebra == 'flexifilter-even') ? 'flexifilter-odd' : 'flexifilter-even';

@@ -2,9 +2,9 @@
 // $Id: flexifilter.module,v 1.16.2.7 2008/11/22 22:13:33 cwgordon7 Exp $
 
 $path = drupal_get_path('module', 'flexifilter');
-include_once ($path .'/flexifilter.components.inc');
-include_once ($path .'/flexifilter.conditions.inc');
-include_once ($path .'/flexifilter.flexifilters.inc');
+include_once ($path . '/flexifilter.components.inc');
+include_once ($path . '/flexifilter.conditions.inc');
+include_once ($path . '/flexifilter.flexifilters.inc');
 
 define('FLEXIFILTER_PART_TYPE_COMPONENT', 0);
 define('FLEXIFILTER_PART_TYPE_CONDITION', 1);
@@ -131,16 +131,16 @@ function flexifilter_menu() {
 function flexifilter_help($path, $arg) {
   switch ($path) {
     case 'admin/help#flexifilter':
-      $output = '<p>'. t('Flexifilters are flexible filters that can be used by <a href="@input_formats">Input Formats</a> to filter created content.', array('@input_formats' => url('admin/settings/filter'))) .'</p>';
-      $output .= '<p>'. t('For more information, see the online handbook entry for <a href="@flexifilter">Flexifilter module</a>.', array('@flexifilter' => 'http://drupal.org/node/212410/')) .'</p>';
+      $output = '<p>' . t('Flexifilters are flexible filters that can be used by <a href="@input_formats">Input Formats</a> to filter created content.', array('@input_formats' => url('admin/settings/filter'))) . '</p>';
+      $output .= '<p>' . t('For more information, see the online handbook entry for <a href="@flexifilter">Flexifilter module</a>.', array('@flexifilter' => 'http://drupal.org/node/212410/')) . '</p>';
       return $output;
 
     case 'admin/build/flexifilters':
-      return '<p>'. t('Flexifilters are flexible filters that can be used by <a href="@input_formats">Input Formats</a> to filter created content.', array('@input_formats' => url('admin/settings/filter'))) .'</p>';
+      return '<p>' . t('Flexifilters are flexible filters that can be used by <a href="@input_formats">Input Formats</a> to filter created content.', array('@input_formats' => url('admin/settings/filter'))) . '</p>';
 
     case 'admin/build/flexifilters/%/edit':
-      $output = '<p>'. t('Flexifilters are defined in terms of components. A component can range from something simple like "regex replacement" to "invoke other filter" or "while loop". By combining these components, you can create a filter to do what you want. Use the "Add component" dropdown to add a new component to the end of your filter, and then use the "Re/move" dropdown within the component to remove the component, or to move it up/down within the list of components.') .'</p>';
-      $output .= '<p>'. t('Some components (for example, the if/while loops) can have components and conditions within them. In this case, the if/while has a list of components, just like the filter itself has a list of components. The if/while will also have a condition, which controls when the list of components happen.');
+      $output = '<p>' . t('Flexifilters are defined in terms of components. A component can range from something simple like "regex replacement" to "invoke other filter" or "while loop". By combining these components, you can create a filter to do what you want. Use the "Add component" dropdown to add a new component to the end of your filter, and then use the "Re/move" dropdown within the component to remove the component, or to move it up/down within the list of components.') . '</p>';
+      $output .= '<p>' . t('Some components (for example, the if/while loops) can have components and conditions within them. In this case, the if/while has a list of components, just like the filter itself has a list of components. The if/while will also have a condition, which controls when the list of components happen.');
       return $output;
   }
 }
@@ -515,7 +515,7 @@ function flexifilter_save_filter($filter) {
     sort($pids_to_reuse, SORT_NUMERIC);
     $pid_root = _flexifilter_save_filter_components($filter['components'], $fid, $pids_to_reuse);
     if (count($pids_to_reuse) > 0) {
-      db_query('DELETE FROM {flexifilters_parts} WHERE pid = '. implode($pids_to_reuse, ' OR pid = '), $fid);
+      db_query('DELETE FROM {flexifilters_parts} WHERE pid = ' . implode($pids_to_reuse, ' OR pid = '), $fid);
     }
     db_query("UPDATE {flexifilters} SET label = '%s', description = '%s', pid_root = %d, advanced = %d, cache = %d WHERE fid = %d",
       $label, $description, $pid_root, $advanced, $cache, $fid);
@@ -760,7 +760,7 @@ function flexifilter_get_number_enabled_filters($reset = FALSE) {
 function flexifilter_install_flexifilters($module, $flexifilters = NULL) {
   if (is_null($flexifilters)) {
     // Allow for magic file naming.
-    $file = drupal_get_path('module', $module) ."/$module.flexifilters.inc";
+    $file = drupal_get_path('module', $module) . '/$module.flexifilters.inc';
     if (file_exists($file)) {
       require_once $file;
     }

@@ -6,7 +6,7 @@
  */
 function flexifilter_install() {
   drupal_install_schema('flexifilter');
-  require_once drupal_get_path('module', 'flexifilter') .'/flexifilter.module';
+  require_once drupal_get_path('module', 'flexifilter') . '/flexifilter.module';
   flexifilter_install_flexifilters('flexifilter');
 }
 
