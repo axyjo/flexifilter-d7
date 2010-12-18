@@ -16,13 +16,13 @@ function flexifilter_filter_list_form($form, &$form_state) {
 
   $form = array();
   $form['enabled_header'] = array(
-    '#value' => '<h3>' . t('Enabled Flexifilters') . '</h3>',
+    '#markup' => '<h3>' . t('Enabled Flexifilters') . '</h3>',
     '#suffix' => t('If a flexifilter is enabled, then it can be used within input formats, however there can only be 128 enabled at any one time.') . '<br/>',
   );
   $form['enabled'] = flexifilter_filter_list_form_table(TRUE);
 
   $form['disabled_header'] = array(
-    '#value' => '<h3>' . t('Disabled Flexifilters') . '</h3>',
+    '#markup' => '<h3>' . t('Disabled Flexifilters') . '</h3>',
     '#suffix' => t('If a flexifilter is disabled, then it cannot be used within input formats, although it can be used within other flexifilters.') . '<br/>',
   );
   $form['disabled'] = flexifilter_filter_list_form_table(FALSE);
@@ -61,10 +61,10 @@ function flexifilter_filter_list_form_table($enabled) {
     }
   }
   if (count($rows)) {
-    return array('#value' => theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('flexifilters-list')))));
+    return array('#markup' => theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('flexifilters-list')))));
   }
   else {
-    return array('#value' => t('None.'));
+    return array('#markup' => t('None.'));
   }
 }
 
