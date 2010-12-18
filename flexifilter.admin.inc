@@ -37,8 +37,6 @@ function flexifilter_filter_list_form($form, &$form_state) {
  *   Is TRUE if we're theming the currently enabled filters.s
  */
 function flexifilter_filter_list_form_table($enabled) {
-  $show_disable_link = $enabled;
-  $show_enable_link  = !$enabled && flexifilter_get_number_enabled_filters() < FLEXIFILTER_MAX_FILTERS;
   $header            = array(t('Label'), t('Description'), t('Edit'), t('Delete'), t('Preview'), t($enabled ? 'Disable' : 'Enable'));
   $rows              = array();
   $filters           = flexifilter_get_filters();
@@ -48,14 +46,11 @@ function flexifilter_filter_list_form_table($enabled) {
       $row[] = l(t('Edit'), 'admin/structure/flexifilters/' . $id . '/edit', array(), drupal_get_destination());
       $row[] = l(t('Delete'), 'admin/structure/flexifilters/' . $id . '/delete', array(), drupal_get_destination());
       $row[] = l(t('Preview'), 'admin/structure/flexifilters/' . $id . '/preview', array(), drupal_get_destination());
-      if ($show_disable_link) {
+      if ($enabled) {
         $row[] = l(t('Disable'), 'admin/structure/flexifilters/' . $id . '/disable', array(), drupal_get_destination());
       }
-      elseif ($show_enable_link) {
-        $row[] = l(t('Enable'), 'admin/structure/flexifilters/' . $id . '/enable', array(), drupal_get_destination());
-      }
       else {
-        $row[] = '';
+        $row[] = l(t('Enable'), 'admin/structure/flexifilters/' . $id . '/enable', array(), drupal_get_destination());
       }
       $rows[] = $row;
     }
@@ -805,7 +800,7 @@ function flexifilter_filter_delete_form_submit($form, &$form_state) {
   $filters = flexifilter_get_filters();
   $filter  = $filters[$fid];
   if ($filter['enabled']) {
-    flexifilter_remove_from_filters($filter['delta']);
+    flexifilter_remove_from_filters($filter['label']);
   }
   db_delete('flexifilters_parts')
   ->condition('fid', $fid)
@@ -832,7 +827,7 @@ function flexifilter_filter_disable_form_submit($form, &$form_state) {
   $filters = flexifilter_get_filters();
   $filter  = $filters[$fid];
   if ($filter['enabled']) {
-    flexifilter_remove_from_filters($filter['delta']);
+    flexifilter_remove_from_filters($filter['label']);
     db_update('flexifilters')
   ->fields(array(
       'enabled' => 0,
@@ -858,11 +853,10 @@ function flexifilter_filter_enable_form_submit($form, &$form_state) {
   $fid     = $form_state['values']['fid'];
   $filters = flexifilter_get_filters();
   $filter  = $filters[$fid];
-  if (!$filter['enabled'] && flexifilter_get_number_enabled_filters() < FLEXIFILTER_MAX_FILTERS) {
+  if (!$filter['enabled']) {
     db_update('flexifilters')
   ->fields(array(
       'enabled' => 1,
-      'delta' => flexifilter_get_unused_delta(),
     ))
   ->condition('fid', $fid)
   ->execute();

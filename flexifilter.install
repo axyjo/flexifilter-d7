@@ -55,13 +55,6 @@ function flexifilter_schema() {
         'description' => '1 if the Flexifilter is enabled, 0 otherwise',
         'disp-width' => '3',
       ),
-      'delta' => array(
-        'type' => 'int',
-        'size' => 'tiny',
-        'not null' => TRUE,
-        'disp-width' => '4',
-        'description' => 'Used to map Flexifilters to filters.',
-      ),
       'pid_root' => array(
         'type' => 'int',
         'unsigned' => TRUE,
@@ -87,9 +80,6 @@ function flexifilter_schema() {
       ),
     ),
     'primary key' => array('fid'),
-    'indexes' => array(
-      'delta' => array('delta'),
-    ),
   );
 
   $schema['flexifilters_parts'] = array(

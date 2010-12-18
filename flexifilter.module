@@ -10,8 +10,6 @@ define('FLEXIFILTER_PART_TYPE_COMPONENT', 0);
 define('FLEXIFILTER_PART_TYPE_CONDITION', 1);
 define('FLEXIFILTER_PART_TYPE_ROOT', 2);
 
-define('FLEXIFILTER_MAX_FILTERS', 128);
-
 /**
  * Implements hook_permission().
  */
@@ -472,7 +470,6 @@ function flexifilter_get_field($flexifilter, $field) {
  *  - id : The flexifilter ID number
  *  - enabled : TRUE if the flexifilter is enabled, FALSE otherwise
  *  - advanced
- *  - delta : If enabled, then a value between 0 and 127 which is unique in the enabled flexifilters
  *  - components : An array containing the components of the flexifilter
  */
 function flexifilter_get_filters($include_components = TRUE, $reset = FALSE) {
@@ -492,9 +489,8 @@ function flexifilter_get_filters($include_components = TRUE, $reset = FALSE) {
  * Saves a flexifilter to the database.
  *
  * @param $filter A flexifilter to save. Should be of same form as the flexifilters returned from flexifilter_get_filters
- * (e.g. an array containing the label,description,id,enabled,advanced,delta and components fields), although id can be
- * set to 'new' to create a new flexifilter rather than update an existing one (in which case, delta is ignored). Do
- * not use
+ * (e.g. an array containing the label,description,id,enabled,advanced and components fields), although id can be
+ * set to 'new' to create a new flexifilter rather than update an existing one. Do not use
  *
  * @return The fid.
  */
@@ -510,7 +506,6 @@ function flexifilter_save_filter($filter) {
       'label' => $label,
       'description' => $description,
       'enabled' => 0,
-      'delta' => 0,
       'pid_root' => 0,
       'advanced' => $advanced,
       'cache' => $cache,
@@ -550,21 +545,7 @@ function flexifilter_save_filter($filter) {
   $existing_filters = flexifilter_get_filters(FALSE, TRUE);
   if (isset($existing_filters[$fid]['enabled']) && isset($filter['enabled'])) {
     if ($existing_filters[$fid]['enabled'] != $filter['enabled']) {
-      if ($filter['enabled']) {
-        if (flexifilter_get_number_enabled_filters() < FLEXIFILTER_MAX_FILTERS) {
-          $delta = flexifilter_get_unused_delta();
-          if ($delta !== FALSE) {
-            db_update('flexifilters')
-  ->fields(array(
-              'enabled' => 1,
-              'delta' => $delta,
-            ))
-  ->condition('fid', $fid)
-  ->execute();
-          }
-        }
-      }
-      else {
+      if (!$filter['enabled']) {
         db_update('flexifilters')
   ->fields(array(
           'enabled' => 0,
@@ -683,24 +664,21 @@ function _flexifilter_save_filter_condition($condition, $fid, &$pids_to_reuse, $
   }
 }
 
-/**
- * Fetches flexifilters by delta.
- */
-function flexifilter_get_filter_by_delta($delta, $reset = FALSE) {
+function flexifilter_get_filter_by_label($label, $reset = FALSE) {
   static $cache;
   if (!isset($cache)) {
     $cache = array();
   }
-  if (!isset($cache[$delta]) || $reset) {
-    $result = db_query('SELECT * FROM {flexifilters} WHERE enabled = :enabled AND delta = :delta', array(':enabled' => 1, ':delta' => $delta));
+  if (!isset($cache[$label]) || $reset) {
+    $result = db_query('SELECT * FROM {flexifilters} WHERE enabled = 1 AND label = :label', array(':label' => $label));
     if ($result) {
-      $cache[$delta] = _flexifilter_filter_from_db_row($result, TRUE);
+      $cache[$label] = _flexifilter_filter_from_db_row($result, TRUE);
     }
     else {
-      $cache[$delta] = FALSE;
+      $cache[$label] = FALSE;
     }
   }
-  return $cache[$delta];
+  return $cache[$label];
 }
 
 /**
@@ -714,7 +692,6 @@ function _flexifilter_filter_from_db_row($row, $include_components) {
     'id' => $row->fid,
     'enabled' => ($row->enabled == 1),
     'advanced' => ($row->advanced == 1),
-    'delta' => $row->delta,
     'cache' => $row->cache,
   );
   $pid_root = $row->pid_root;
@@ -856,20 +833,3 @@ function flexifilter_install_flexifilters($module, $flexifilters = NULL) {
   return $fids;
 }
 
-function flexifilter_get_unused_delta() {
-  $deltas = array();
-  for ($i = 0; $i < FLEXIFILTER_MAX_FILTERS; $i++) {
-    $deltas[$i] = TRUE;
-  }
-  foreach (flexifilter_get_filters(FALSE) as $flexifilter) {
-    if ($flexifilter['enabled']) {
-      $deltas[$flexifilter['delta']] = FALSE;
-    }
-  }
-  for ($i = 0; $i < FLEXIFILTER_MAX_FILTERS; $i++) {
-    if ($deltas[$i] == TRUE) {
-      return $i;
-    }
-  }
-  return FALSE;
-}
