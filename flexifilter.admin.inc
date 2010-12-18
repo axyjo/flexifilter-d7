@@ -498,7 +498,7 @@ function flexifilter_filter_edit_form_components($data, &$data_base, $show_advan
 /**
  * The add/edit form for flexifilters.
  */
-function flexifilter_filter_edit_form($form_state, $flexifilter = 'new') {
+function flexifilter_filter_edit_form($form, &$form_state, $flexifilter = 'new') {
   if (!isset($form_state['post']) || !isset($form_state['post']['fid'])) {
     $data = array();
     $data['fid'] = $flexifilter === 'new' ? 'new' : $flexifilter['id'];
@@ -777,7 +777,7 @@ function flexifilter_filter_edit_form_submit($form, &$form_state) {
   }
 }
 
-function flexifilter_filter_delete_form($form_state, $flexifilter) {
+function flexifilter_filter_delete_form($form, &$form_state, $flexifilter) {
   $form = array();
   $form['fid'] = array(
     '#type' => 'hidden',
@@ -812,7 +812,7 @@ function flexifilter_filter_delete_form_submit($form, &$form_state) {
   $form_state['redirect'] = 'admin/structure/flexifilters';
 }
 
-function flexifilter_filter_disable_form($form_state, $flexifilter) {
+function flexifilter_filter_disable_form($form, &$form_state, $flexifilter) {
   $form = array();
   $form['fid'] = array(
     '#type' => 'hidden',
@@ -839,7 +839,7 @@ function flexifilter_filter_disable_form_submit($form, &$form_state) {
   $form_state['redirect'] = 'admin/structure/flexifilters';
 }
 
-function flexifilter_filter_enable_form($form_state, $flexifilter) {
+function flexifilter_filter_enable_form($form, &$form_state, $flexifilter) {
   $form = array();
   $form['fid'] = array(
     '#type' => 'hidden',
@@ -865,7 +865,7 @@ function flexifilter_filter_enable_form_submit($form, &$form_state) {
   $form_state['redirect'] = 'admin/structure/flexifilters';
 }
 
-function flexifilter_filter_export_form($form_state, $flexifilter) {
+function flexifilter_filter_export_form($form, &$form_state, $flexifilter) {
   $form = array();
   $flexifilter['fid'] = 'new';
   $form['serialized'] = array(
