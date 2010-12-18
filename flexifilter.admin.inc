@@ -61,7 +61,7 @@ function flexifilter_filter_list_form_table($enabled) {
     }
   }
   if (count($rows)) {
-    return array('#value' => theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => 'flexifilters-list'))));
+    return array('#value' => theme('table', array('header' => $header, 'rows' => $rows, 'attributes' => array('class' => array('flexifilters-list')))));
   }
   else {
     return array('#value' => t('None.'));
