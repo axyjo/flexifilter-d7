@@ -448,8 +448,9 @@ function flexifilter_load($fid) {
     return FALSE;
   }
   $result = db_query('SELECT * FROM {flexifilters} WHERE fid = :fid', array(':fid' => $fid));
-  if ($result) {
-    return _flexifilter_filter_from_db_row($result, TRUE);
+  
+  foreach ($result as $row) {
+    return _flexifilter_filter_from_db_row($row, TRUE);
   }
   return FALSE;
 }
