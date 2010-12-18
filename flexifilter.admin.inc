@@ -787,10 +787,10 @@ function flexifilter_filter_delete_form($form, &$form_state, $flexifilter) {
   return confirm_form($form, t('Are you sure you want to delete the flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/structure/flexifilters', t('This action cannot be undone.'), t('Delete'), t('Cancel'));
 }
 
-function flexifilter_remove_from_filters($delta) {
-  db_delete('filters')
+function flexifilter_remove_from_filters($name) {
+  db_delete('filter')
   ->condition('module', 'flexifilter')
-  ->condition('delta', $delta)
+  ->condition('name', $name)
   ->execute();
   cache_clear_all('*', 'cache_filter', TRUE);
 }
