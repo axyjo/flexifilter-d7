@@ -654,56 +654,41 @@ function flexifilter_filter_edit_form_components_from_data($data, $data_base = N
 
 function flexifilter_filter_edit_form_submit_components($data, $fid, &$pids_to_reuse, $parent = FALSE) {
   if ($parent === FALSE) {
+    $values = array(
+      'fid' => $fid,
+      'parent_pid' => 0,
+      'type' => FLEXIFILTER_PART_TYPE_ROOT,
+      'class_name' => '',
+      'settings' => '',
+    );
     if ($reuse_pid = array_shift($pids_to_reuse)) {
-      db_update('flexifilters_parts')
-  ->fields(array(
-        'fid' => $fid,
-        'parent_pid' => 0,
-        'type' => FLEXIFILTER_PART_TYPE_ROOT,
-        'class_name' => '',
-        'settings' => '',
-      ))
-  ->condition('pid', $reuse_pid)
-  ->execute();
-      $parent = $reuse_pid;
+      $values['pid'] = $reuse_pid;
+      drupal_write_record('flexifilter_parts', $values,'pid')
     }
     else {
-      $parent = db_insert('flexifilters_parts')
-  ->fields(array(
-        'fid' => $fid,
-        'parent_pid' => 0,
-        'type' => FLEXIFILTER_PART_TYPE_ROOT,
-        'class_name' => '',
-        'settings' => '',
-      ))
-  ->execute();
+      drupal_write_record('flexifilter_parts', $values);
     }
+    $parent = $values['pid'];
   }
+
   foreach ($data as $key => $child) {
     if (is_numeric($key)) {
+      $child_values = array(
+        'fid' => $fid,
+        'parent_pid' => $parent,
+        'type' => FLEXIFILTER_PART_TYPE_COMPONENT,
+        'class_name' => $child['class'],
+        'settings' => serialize($child['settings']),
+      );
       if ($child_cid = array_shift($pids_to_reuse)) {
-        db_update('flexifilters_parts')
-  ->fields(array(
-          'fid' => $fid,
-          'parent_pid' => $parent,
-          'type' => FLEXIFILTER_PART_TYPE_COMPONENT,
-          'class_name' => $child['class'],
-          'settings' => serialize($child['settings']),
-        ))
-  ->condition('pid', $child_cid)
-  ->execute();
+        $child_values['pid'] = $child_cid;
+        drupal_write_record('flexifilter_parts', $values, 'pid');
       }
       else {
-        $child_cid = db_insert('flexifilters_parts')
-  ->fields(array(
-          'fid' => $fid,
-          'parent_pid' => $parent,
-          'type' => FLEXIFILTER_PART_TYPE_COMPONENT,
-          'class_name' => $child['class'],
-          'settings' => serialize($child['settings']),
-        ))
-  ->execute();
+        drupal_write_record('flexifilter_parts', $values);
       }
+      $child_cid = $child_values['pid'];
+
       if (isset($child['components'])) {
         flexifilter_filter_edit_form_submit_components($child['components'], $fid, $pids_to_reuse, $child_cid);
       }
