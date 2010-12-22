@@ -9,3 +9,4 @@ files[] = flexifilter.conditions.inc
 files[] = flexifilter.flexifilters.inc
 files[] = flexifilter.install
 files[] = flexifilter.module
+files[] = flexifilter.test
