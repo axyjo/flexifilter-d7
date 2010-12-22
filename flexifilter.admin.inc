@@ -752,11 +752,8 @@ function flexifilter_filter_edit_form_submit($form, &$form_state) {
   $values += $values['basic'];
   unset($values['basic']);
   if ($values['fid'] === 'new') {
-    $enabled = 0;
-    if (flexifilter_get_number_enabled_filters() < FLEXIFILTER_MAX_FILTERS) {
-      $enabled = 1;
-    }
-    $values['enabled'] = $enabled;
+    // Enable new flexifilters upon creation.
+    $values['enabled'] = 1;
   }
   $fid = flexifilter_save_filter($values);
   if ($values['fid'] === 'new') {
