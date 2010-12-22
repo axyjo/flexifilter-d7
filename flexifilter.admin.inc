@@ -663,7 +663,7 @@ function flexifilter_filter_edit_form_submit_components($data, $fid, &$pids_to_r
     );
     if ($reuse_pid = array_shift($pids_to_reuse)) {
       $values['pid'] = $reuse_pid;
-      drupal_write_record('flexifilter_parts', $values,'pid')
+      drupal_write_record('flexifilter_parts', $values,'pid');
     }
     else {
       drupal_write_record('flexifilter_parts', $values);
