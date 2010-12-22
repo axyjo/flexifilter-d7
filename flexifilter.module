@@ -613,29 +613,21 @@ function _flexifilter_save_filter_condition($condition, $fid, &$pids_to_reuse, $
     $condition_conditions = $condition['settings']['conditions'];
     unset($condition['settings']['conditions']);
   }
+  $values = array(
+    'fid' => $fid,
+    'parent_pid' => $parent,
+    'type' => FLEXIFILTER_PART_TYPE_CONDITION,
+    'class_name' => $condition['class'],
+    'settings' => serialize($condition['settings']),
+  );
   if ($our_pid = array_shift($pids_to_reuse)) {
-    db_update('flexifilters_parts')
-  ->fields(array(
-      'fid' => $fid,
-      'parent_pid' => $parent,
-      'type' => FLEXIFILTER_PART_TYPE_CONDITION,
-      'class_name' => $condition['class'],
-      'settings' => serialize($condition['settings']),
-    ))
-  ->condition('pid', $our_pid)
-  ->execute();
+    $values['pid'] = $our_pid;
+    drupal_write_record('flexifilter_parts', $values, 'pid');
   }
   else {
-    $our_pid = db_insert('flexifilters_parts')
-  ->fields(array(
-      'fid' => $fid,
-      'parent_pid' => $parent,
-      'type' => FLEXIFILTER_PART_TYPE_CONDITION,
-      'class_name' => $condition['class'],
-      'settings' => serialize($condition['settings']),
-    ))
-  ->execute();
+    drupal_write_record('flexifilter_parts', $values);
   }
+  $our_pid = $values['pid'];
   if (isset($condition_conditions)) {
     foreach ($condition_conditions as $sub_condition) {
       _flexifilter_save_filter_condition($sub_condition, $fid, $pids_to_reuse, $our_pid);
