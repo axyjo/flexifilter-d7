@@ -479,25 +479,22 @@ function flexifilter_save_filter($filter) {
   $description = $filter['description'];
   $advanced    = $filter['advanced'];
   $cache       = isset($filter['cache']) ? $filter['cache'] : 1;
+  
+  $filter_values = array(
+    'label' => $label,
+    'description' => $description,
+    'enabled' => 0,
+    'pid_root' => 0,
+    'advanced' => $advanced,
+    'cache' => $cache,
+  );
   if ($fid === 'new') {
-    $fid = db_insert('flexifilters')
-  ->fields(array(
-      'label' => $label,
-      'description' => $description,
-      'enabled' => 0,
-      'pid_root' => 0,
-      'advanced' => $advanced,
-      'cache' => $cache,
-    ))
-  ->execute();
+    drupal_write_record('flexifilters', $filter_values);
+    $fid = $filter_values['fid'];
     $pids_to_reuse = array();
     $pid_root      = _flexifilter_save_filter_components($filter['components'], $fid, $pids_to_reuse);
-    db_update('flexifilters')
-  ->fields(array(
-      'pid_root' => $pid_root,
-    ))
-  ->condition('fid', $fid)
-  ->execute();
+    $pid_root_values = array('pid_root' => $pid_root, 'fid' => $fid);
+    drupal_write_record('flexifilters', $pid_root_values, 'fid');
   }
   else {
     $pids_to_reuse = array();
@@ -510,27 +507,15 @@ function flexifilter_save_filter($filter) {
     if (count($pids_to_reuse) > 0) {
       db_query('DELETE FROM {flexifilters_parts} WHERE pid = ' . implode($pids_to_reuse, ' OR pid = '), $fid);
     }
-    db_update('flexifilters')
-  ->fields(array(
-      'label' => $label,
-      'description' => $description,
-      'pid_root' => $pid_root,
-      'advanced' => $advanced,
-      'cache' => $cache,
-    ))
-  ->condition('fid', $fid)
-  ->execute();
+    $filter_values['fid'] = $fid;
+    drupal_write_record('flexifilters', $filter_values, 'fid');
   }
   $existing_filters = flexifilter_get_filters(FALSE, TRUE);
   if (isset($existing_filters[$fid]['enabled']) && isset($filter['enabled'])) {
     if ($existing_filters[$fid]['enabled'] != $filter['enabled']) {
       if (!$filter['enabled']) {
-        db_update('flexifilters')
-  ->fields(array(
-          'enabled' => 0,
-        ))
-  ->condition('fid', $fid)
-  ->execute();
+        $disable = array('enabled' => 0, 'fid' => $fid);
+        drupal_write_record('flexifilters', $disable, 'fid');
       }
     }
   }
