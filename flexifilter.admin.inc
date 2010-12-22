@@ -701,29 +701,21 @@ function flexifilter_filter_edit_form_submit_components($data, $fid, &$pids_to_r
 }
 
 function flexifilter_filter_edit_form_submit_condition($data, $fid, &$pids_to_reuse, $parent) {
+  $values = array(
+    'fid' => $fid,
+    'parent_pid' => $parent,
+    'type' => FLEXIFILTER_PART_TYPE_CONDITION,
+    'class_name' => $data['class'],
+    'settings' => serialize($data['settings'])
+  );
   if ($our_pid = array_shift($pids_to_reuse)) {
-    db_update('flexifilters_parts')
-  ->fields(array(
-      'fid' => $fid,
-      'parent_pid' => $parent,
-      'type' => FLEXIFILTER_PART_TYPE_CONDITION,
-      'class_name' => $data['class'],
-      'settings' => serialize($data['settings']),
-    ))
-  ->condition('pid', $our_pid)
-  ->execute();
+    $values['pid'] = $our_pid;
+    drupal_write_record('flexifilter_parts', $values, 'pid');
   }
   else {
-    $our_pid = db_insert('flexifilters_parts')
-  ->fields(array(
-      'fid' => $fid,
-      'parent_pid' => $parent,
-      'type' => FLEXIFILTER_PART_TYPE_CONDITION,
-      'class_name' => $data['class'],
-      'settings' => serialize($data['settings']),
-    ))
-  ->execute();
+    drupal_write_record('flexifilter_parts', $values);
   }
+  $our_pid = $values['pid'];
   if (isset($data['conditions'])) {
     foreach ($data['conditions'] as $condition) {
       flexifilter_filter_edit_form_submit_condition($condition, $fid, $pids_to_reuse, $our_pid);
