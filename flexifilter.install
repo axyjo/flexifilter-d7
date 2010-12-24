@@ -135,3 +135,10 @@ function flexifilter_schema() {
 
   return $schema;
 }
+
+function flexifilter_update_7000() {
+  db_query('ALTER TABLE {flexifilters} RENAME TO {flexifilter}');
+  db_query('ALTER TABLE {flexifilters_parts} RENAME TO {flexifilter_parts}');
+  db_query('ALTER TABLE {flexifilter} DROP INDEX delta');
+  db_query('ALTER TABLE {flexifilter} DROP COLUMN delta');
+}
