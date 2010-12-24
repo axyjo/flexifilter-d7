@@ -776,10 +776,10 @@ function flexifilter_filter_delete_form_submit($form, &$form_state) {
   if ($filter['enabled']) {
     flexifilter_remove_from_filters($filter['label']);
   }
-  db_delete('flexifilters_parts')
+  db_delete('flexifilter_parts')
   ->condition('fid', $fid)
   ->execute();
-  db_delete('flexifilters')
+  db_delete('flexifilter')
   ->condition('fid', $fid)
   ->execute();
   drupal_set_message(t('Flexifilter deleted.'));
