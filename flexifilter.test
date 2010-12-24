@@ -15,11 +15,11 @@ class FlexifilterAdministrationTestCase extends DrupalWebTestCase {
   
   public function setUp() {
     parent::setUp('flexifilter');
+    $this->admin_user = $this->drupalCreateUser(array('administer nodes', 'administer flexifilter'));
+    $this->basic_user = $this->drupalCreateUser();
   }
   
   public function testPermissions() {
-    $this->admin_user = $this->drupalCreateUser(array('administer nodes', 'administer flexifilter'));
-    $this->basic_user = $this->drupalCreateUser();
     $this->drupalLogin($this->admin_user);
     $this->drupalGet('admin/structure/flexifilters');
     $this->assertText('Enabled Flexifilters');
