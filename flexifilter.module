@@ -424,7 +424,7 @@ function flexifilter_load($fid) {
   if (!is_numeric($fid)) {
     return FALSE;
   }
-  $result = db_query('SELECT * FROM {flexifilters} WHERE fid = :fid', array(':fid' => $fid));
+  $result = db_query('SELECT * FROM {flexifilter} WHERE fid = :fid', array(':fid' => $fid));
 
   foreach ($result as $row) {
     return _flexifilter_filter_from_db_row($row, TRUE);
@@ -455,7 +455,7 @@ function flexifilter_get_filters($include_components = TRUE, $reset = FALSE) {
   static $cache = array();
   if (!isset($cache[$include_components]) || $reset) {
     $filters = array();
-    $result = db_query('SELECT * FROM {flexifilters}');
+    $result = db_query('SELECT * FROM {flexifilter}');
     foreach ($result as $row) {
       $filters[$row->fid] = _flexifilter_filter_from_db_row($row, $include_components);
     }
@@ -489,33 +489,33 @@ function flexifilter_save_filter($filter) {
     'cache' => $cache,
   );
   if ($fid === 'new') {
-    drupal_write_record('flexifilters', $filter_values);
+    drupal_write_record('flexifilter', $filter_values);
     $fid = $filter_values['fid'];
     $pids_to_reuse = array();
     $pid_root      = _flexifilter_save_filter_components($filter['components'], $fid, $pids_to_reuse);
     $pid_root_values = array('pid_root' => $pid_root, 'fid' => $fid);
-    drupal_write_record('flexifilters', $pid_root_values, 'fid');
+    drupal_write_record('flexifilter', $pid_root_values, 'fid');
   }
   else {
     $pids_to_reuse = array();
-    $result = db_query('SELECT pid FROM {flexifilters_parts} WHERE fid = :fid', array(':fid' => $fid));
+    $result = db_query('SELECT pid FROM {flexifilter_parts} WHERE fid = :fid', array(':fid' => $fid));
     foreach ($result as $row) {
       $pids_to_reuse[] = $row->pid;
     }
     sort($pids_to_reuse, SORT_NUMERIC);
     $pid_root = _flexifilter_save_filter_components($filter['components'], $fid, $pids_to_reuse);
     if (count($pids_to_reuse) > 0) {
-      db_query('DELETE FROM {flexifilters_parts} WHERE pid = ' . implode($pids_to_reuse, ' OR pid = '), $fid);
+      db_query('DELETE FROM {flexifilter_parts} WHERE pid = ' . implode($pids_to_reuse, ' OR pid = '), $fid);
     }
     $filter_values['fid'] = $fid;
-    drupal_write_record('flexifilters', $filter_values, 'fid');
+    drupal_write_record('flexifilter', $filter_values, 'fid');
   }
   $existing_filters = flexifilter_get_filters(FALSE, TRUE);
   if (isset($existing_filters[$fid]['enabled']) && isset($filter['enabled'])) {
     if ($existing_filters[$fid]['enabled'] != $filter['enabled']) {
       if (!$filter['enabled']) {
         $disable = array('enabled' => 0, 'fid' => $fid);
-        drupal_write_record('flexifilters', $disable, 'fid');
+        drupal_write_record('flexifilter', $disable, 'fid');
       }
     }
   }
@@ -525,7 +525,7 @@ function flexifilter_save_filter($filter) {
 function _flexifilter_save_filter_components($components, $fid, &$pids_to_reuse, $parent = FALSE) {
   if ($parent === FALSE) {
     $values = array(
-      'fid' => $fid,
+      'fid' => (int)$fid,
       'parent_pid' => 0,
       'type' => FLEXIFILTER_PART_TYPE_ROOT,
       'class_name' => '',
@@ -536,7 +536,7 @@ function _flexifilter_save_filter_components($components, $fid, &$pids_to_reuse,
       drupal_write_record('flexifilter_parts', $values, 'pid');
     }
     else {
-     drupal_write_record('flexifilter_parts', $values);
+      drupal_write_record('flexifilter_parts', $values);
     }
     $parent = $values['pid'];
   }
@@ -561,10 +561,10 @@ function _flexifilter_save_filter_components($components, $fid, &$pids_to_reuse,
 
       if ($child_cid = array_shift($pids_to_reuse)) {
         $child_values['pid'] = $child_cid;
-        drupal_write_record('flexifilters_parts', $child_values, 'pid');
+        drupal_write_record('flexifilter_parts', $child_values, 'pid');
       }
       else {
-        drupal_write_record('flexifilters_parts', $child_values);
+        drupal_write_record('flexifilter_parts', $child_values);
       }
       $child_cid = $child_values['pid'];
       if (isset($child_components)) {
@@ -611,7 +611,7 @@ function flexifilter_get_filter_by_label($label, $reset = FALSE) {
     $cache = array();
   }
   if (!isset($cache[$label]) || $reset) {
-    $result = db_query('SELECT * FROM {flexifilters} WHERE enabled = 1 AND label = :label', array(':label' => $label));
+    $result = db_query('SELECT * FROM {flexifilter} WHERE enabled = 1 AND label = :label', array(':label' => $label));
     if ($result) {
       $cache[$label] = _flexifilter_filter_from_db_row($result, TRUE);
     }
@@ -639,7 +639,7 @@ function _flexifilter_filter_from_db_row($row, $include_components) {
 
   if ($include_components) {
     // Fetch all the parts of the filter and store them in a flat array
-    $result             = db_query('SELECT * FROM {flexifilters_parts} WHERE fid = :fid', array(':fid' => $row->fid));
+    $result             = db_query('SELECT * FROM {flexifilter_parts} WHERE fid = :fid', array(':fid' => $row->fid));
     $components_flat    = array();
     $component_children = array();
     $id_next            = 0;

@@ -803,7 +803,7 @@ function flexifilter_filter_disable_form_submit($form, &$form_state) {
   if ($filter['enabled']) {
     flexifilter_remove_from_filters($filter['label']);
     $values = array('enabled' => 0, 'fid' => $fid);
-    drupal_write_record('flexifilters', $values, 'fid');
+    drupal_write_record('flexifilter', $values, 'fid');
     drupal_set_message(t('Flexifilter disabled.'));
   }
   $form_state['redirect'] = 'admin/structure/flexifilters';
@@ -825,7 +825,7 @@ function flexifilter_filter_enable_form_submit($form, &$form_state) {
   $filter  = $filters[$fid];
   if (!$filter['enabled']) {
     $values = array('enabled' => 1, 'fid' => $fid);
-    drupal_write_record('flexifilters', $values, 'fid');
+    drupal_write_record('flexifilter', $values, 'fid');
     drupal_set_message(t('Flexifilter enabled.'));
   }
   $form_state['redirect'] = 'admin/structure/flexifilters';

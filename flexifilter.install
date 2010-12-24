@@ -25,7 +25,7 @@ function flexifilter_uninstall() {
 function flexifilter_schema() {
   $schema = array();
 
-  $schema['flexifilters'] = array(
+  $schema['flexifilter'] = array(
     'description' => 'Holds definitions for flexifilters.',
     'fields' => array(
       'fid' => array(
@@ -82,7 +82,7 @@ function flexifilter_schema() {
     'primary key' => array('fid'),
   );
 
-  $schema['flexifilters_parts'] = array(
+  $schema['flexifilter_parts'] = array(
     'description' => 'Holds definitions for individual Flexifilter parts (components and conditions).',
     'fields' => array(
       'pid' => array(
