@@ -605,23 +605,6 @@ function _flexifilter_save_filter_condition($condition, $fid, &$pids_to_reuse, $
   }
 }
 
-function flexifilter_get_filter_by_label($label, $reset = FALSE) {
-  static $cache;
-  if (!isset($cache)) {
-    $cache = array();
-  }
-  if (!isset($cache[$label]) || $reset) {
-    $result = db_query('SELECT * FROM {flexifilter} WHERE enabled = 1 AND label = :label', array(':label' => $label));
-    if ($result) {
-      $cache[$label] = _flexifilter_filter_from_db_row($result, TRUE);
-    }
-    else {
-      $cache[$label] = FALSE;
-    }
-  }
-  return $cache[$label];
-}
-
 /**
  * Helper function for flexifilter_get_filters; converts a row from the flexifilters table
  * into a full flexifilter.
