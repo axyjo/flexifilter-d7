@@ -17,7 +17,7 @@ function flexifilter_filter_list_form($form, &$form_state) {
   $form = array();
   $form['enabled_header'] = array(
     '#markup' => '<h3>' . t('Enabled Flexifilters') . '</h3>',
-    '#suffix' => t('If a flexifilter is enabled, then it can be used within input formats, however there can only be 128 enabled at any one time.') . '<br/>',
+    '#suffix' => t('If a flexifilter is enabled, then it can be used within input formats.') . '<br/>',
   );
   $form['enabled'] = flexifilter_filter_list_form_table(TRUE);
 
