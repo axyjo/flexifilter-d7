@@ -17,13 +17,13 @@ function flexifilter_filter_list_form($form, &$form_state) {
   $form = array();
   $form['enabled_header'] = array(
     '#markup' => '<h3>' . t('Enabled Flexifilters') . '</h3>',
-    '#suffix' => t('If a flexifilter is enabled, then it can be used within input formats.') . '<br/>',
+    '#suffix' => t('If a Flexifilter is enabled, then it can be used within input formats.') . '<br/>',
   );
   $form['enabled'] = flexifilter_filter_list_form_table(TRUE);
 
   $form['disabled_header'] = array(
     '#markup' => '<h3>' . t('Disabled Flexifilters') . '</h3>',
-    '#suffix' => t('If a flexifilter is disabled, then it cannot be used within input formats, although it can be used within other flexifilters.') . '<br/>',
+    '#suffix' => t('If a Flexifilter is disabled, then it cannot be used with text formats. However, it can be used within other Flexifilters.') . '<br/>',
   );
   $form['disabled'] = flexifilter_filter_list_form_table(FALSE);
 
@@ -34,7 +34,7 @@ function flexifilter_filter_list_form($form, &$form_state) {
  * Helper function for flexifilter_filter_list_form. Returns the table for the overview page.
  *
  * @param $enabled
- *   Is TRUE if we're theming the currently enabled filters.s
+ *   Is TRUE if we're theming the currently enabled Flexifilters.
  */
 function flexifilter_filter_list_form_table($enabled) {
   $header            = array(t('Label'), t('Description'), t('Edit'), t('Delete'), t('Preview'), t($enabled ? 'Disable' : 'Enable'));
@@ -209,7 +209,7 @@ function flexifilter_filter_edit_form_condition($data, $show_advanced) {
       '#collapsed' => (isset($data['op']) || isset($data['op_c']) || isset($data['is_new'])) ? FALSE : TRUE,
       '#tree' => TRUE,
       '#title' => t('No condition'),
-      '#description' => t('There is no condition set. This will probably cause the component to do nothing, as "No Condition" evaluates to false.'),
+      '#description' => t('There is no condition set. This will probably cause the component to do nothing, as "No Condition" evaluates to FALSE.'),
     );
     $form['class'] = array(
       '#type' => 'hidden',
@@ -268,7 +268,7 @@ function flexifilter_filter_edit_form_condition($data, $show_advanced) {
         '#type' => 'select',
         '#title' => t('Add condition'),
         '#options' => flexifilter_get_grouped_labels($conditions),
-        '#description' => t('Adds a new condition wthin this one.'),
+        '#description' => t('Adds a new condition within this one.'),
       );
       $form['op_c'] = array(
         '#type' => 'submit',
@@ -347,7 +347,7 @@ function flexifilter_filter_edit_form_component($data, $new_weight, $is_first, $
         '#type' => 'select',
         '#title' => t('Change condition'),
         '#options' => flexifilter_get_grouped_labels($conditions),
-        '#description' => t('Changes the condition assocated with this component.'),
+        '#description' => t('Changes the condition associated with this component.'),
       );
       $form['op_c'] = array(
         '#type' => 'submit',
@@ -496,7 +496,7 @@ function flexifilter_filter_edit_form_components($data, &$data_base, $show_advan
 }
 
 /**
- * The add/edit form for flexifilters.
+ * The add/edit form for Flexifilters.
  */
 function flexifilter_filter_edit_form($form, &$form_state, $flexifilter = 'new') {
   if (!isset($form_state['post']) || !isset($form_state['post']['fid'])) {
@@ -542,7 +542,7 @@ function flexifilter_filter_edit_form($form, &$form_state, $flexifilter = 'new')
     '#title' => t('Label'),
     '#required' => TRUE,
     '#maxlength' => 127,
-    '#description' => t('Choose an appropriate label for this flexifilter.'),
+    '#description' => t('Choose an appropriate label for this Flexifilter.'),
     '#default_value' => $data['basic']['label'],
   );
   $form['basic']['description'] = array(
@@ -550,7 +550,7 @@ function flexifilter_filter_edit_form($form, &$form_state, $flexifilter = 'new')
     '#title' => t('Description/filter tips'),
     '#required' => TRUE,
     '#maxlength' => 255,
-    '#description' => t('The tips to present to the user under the input format\'s description on the content creation page. The delimiter &lt;!--break--&gt;
+    '#description' => t('The tips to present to the user under the text format\'s description on the content creation page. The delimiter &lt;!--break--&gt;
 	                     may be added to separate the short description from the long description.'),
     '#default_value' => $data['basic']['description'],
   );
@@ -758,7 +758,7 @@ function flexifilter_filter_delete_form($form, &$form_state, $flexifilter) {
     '#value' => $flexifilter['id'],
   );
 
-  return confirm_form($form, t('Are you sure you want to delete the flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/structure/flexifilters', t('This action cannot be undone.'), t('Delete'), t('Cancel'));
+  return confirm_form($form, t('Are you sure you want to delete the Flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/structure/flexifilters', t('This action cannot be undone.'), t('Delete'), t('Cancel'));
 }
 
 function flexifilter_remove_from_filters($name) {
@@ -793,7 +793,7 @@ function flexifilter_filter_disable_form($form, &$form_state, $flexifilter) {
     '#value' => $flexifilter['id'],
   );
 
-  return confirm_form($form, t('Are you sure you want to disable the flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/structure/flexifilters', t('If you disable the flexifilter, then it cannot be used in any Input Formats.'), t('Disable'), t('Cancel'));
+  return confirm_form($form, t('Are you sure you want to disable the Flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/structure/flexifilters', t('If you disable the Flexifilter, then it cannot be used in any text formats.'), t('Disable'), t('Cancel'));
 }
 
 function flexifilter_filter_disable_form_submit($form, &$form_state) {
@@ -816,7 +816,7 @@ function flexifilter_filter_enable_form($form, &$form_state, $flexifilter) {
     '#value' => $flexifilter['id'],
   );
 
-  return confirm_form($form, t('Are you sure you want to enable the flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/structure/flexifilters', t(''), t('Enable'), t('Cancel'));
+  return confirm_form($form, t('Are you sure you want to enable the Flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/structure/flexifilters', t(''), t('Enable'), t('Cancel'));
 }
 
 function flexifilter_filter_enable_form_submit($form, &$form_state) {
@@ -838,14 +838,14 @@ function flexifilter_filter_export_form($form, &$form_state, $flexifilter) {
     '#type' => 'textarea',
     '#attributes' => array('readonly' => 'readonly'),
     '#cols' => '100',
-    '#title' => t('Serialized flexifilter (for manual imports)'),
+    '#title' => t('Serialized Flexifilter (for manual imports)'),
     '#default_value' => serialize($flexifilter),
   );
   $form['flexifilter'] = array(
     '#type' => 'textarea',
     '#attributes' => array('readonly' => 'readonly'),
     '#cols' => '100',
-    '#title' => t('Exported flexifilter (for hook_flexifilters implementations)'),
+    '#title' => t('Exported Flexifilter (for hook_flexifilters implementations)'),
     '#default_value' => var_export($flexifilter, TRUE),
   );
   return $form;
@@ -856,7 +856,7 @@ function flexifilter_filter_input_form($form_state) {
   $form['flexifilter'] = array(
     '#type' => 'textarea',
     '#title' => t('Flexifilter to import'),
-    '#description' => t('Enter the serialized flexifilter as from a flexifilter export here.'),
+    '#description' => t('Enter the serialized Flexifilter as from a Flexifilter export here.'),
     '#default_value' => '',
     '#required' => TRUE,
   );
@@ -873,7 +873,7 @@ function flexifilter_filter_input_form_submit($form, &$form_state) {
     drupal_goto('admin/structure/flexifilters/' . flexifilter_save_filter($form_state['values']['flexifilter']) . '/edit');
   }
   else {
-    drupal_set_message(t('It appears that the serialized flexifilter you entered was improperly formed. Please check the source.'), 'error');
+    drupal_set_message(t('It appears that the serialized Flexifilter you entered was improperly formed. Please check the source.'), 'error');
   }
 }
 
@@ -885,7 +885,7 @@ function flexifilter_filter_default_form($form_state) {
   }
   $form['selections'] = array(
     '#type' => 'checkboxes',
-    '#title' => t('Default flexifilters to load'),
+    '#title' => t('Default Flexifilters to load'),
     '#multiple' => TRUE,
     '#options' => $names,
     '#required' => TRUE,
