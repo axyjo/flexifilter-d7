@@ -393,11 +393,23 @@ function flexifilter_filter_info() {
 }
 
 function flexifilter_filter_prepare($text, $filter, $format, $langcode, $cache, $cache_id) {
-  return flexifilter_invoke_components($filter['components'], 'prepare', $text);
+  $filters = flexifilter_get_filters();
+  foreach($filters as $row) {
+    if($row['enabled'] && $row['label'] == $filter->title) {
+      $flexifilter = $row;
+    }
+  }
+  return flexifilter_invoke_components($flexifilter['components'], 'prepare', $text);
 }
 
 function flexifilter_filter_process($text, $filter, $format, $langcode, $cache, $cache_id) {
-  return flexifilter_invoke_components($filter['components'], 'process', $text);
+  $filters = flexifilter_get_filters();
+  foreach($filters as $row) {
+    if($row['enabled'] && $row['label'] == $filter->title) {
+      $flexifilter = $row;
+    }
+  }
+  return flexifilter_invoke_components($flexifilter['components'], 'process', $text);
 }
 
 function flexifilter_filter_tips($filter, $format, $long = FALSE) {
