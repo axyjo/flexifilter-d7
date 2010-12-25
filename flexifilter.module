@@ -389,6 +389,7 @@ function flexifilter_filter_info() {
       'tips callback' => 'flexifilter_filter_tips',
     );
   }
+  return $filters;
 }
 
 function flexifilter_filter_prepare($text, $filter, $format, $langcode, $cache, $cache_id) {
