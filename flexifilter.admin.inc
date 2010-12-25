@@ -564,7 +564,7 @@ function flexifilter_filter_edit_form($form, &$form_state, $flexifilter = 'new')
     $form['basic']['cache'] = array(
       '#type' => 'checkbox',
       '#title' => t('Enable caching'),
-      '#description' => t('If caching is not enabled, the filter will run each time the content is viewed. It is useful for dynamic filters (e.g. things that change each time) to have this option off, but this can slow down page loads noticably.'),
+      '#description' => t('If caching is not enabled, the filter will run each time the content is viewed. It is useful for dynamic filters (e.g. things that change each time) to have this option off, but this can slow down page loads noticeably.'),
       '#default_value' => $data['basic']['cache'],
     );
   }
