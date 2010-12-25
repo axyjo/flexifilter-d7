@@ -419,7 +419,7 @@ function _flexifilter_components_sort_weight($a, $b) {
  * Generates an FAPI array for a component list
  *
  * @param $data FAPI values for the component list. Use flexifilter_filter_edit_components_data to
- * convert a components array into coresponding FAPI values.
+ * convert a components array into corresponding FAPI values.
  * @param $data_base FAPI values for the top-level component list
  */
 function flexifilter_filter_edit_form_components($data, &$data_base, $show_advanced) {
