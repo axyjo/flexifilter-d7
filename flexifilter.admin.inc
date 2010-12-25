@@ -915,7 +915,7 @@ function flexifilter_filter_default_form_submit($form, &$form_state) {
   $form_state['redirect'] = 'admin/structure/flexifilters';
 }
 
-function flexifilter_filter_preview_form($form_state, $flexifilter) {
+function flexifilter_filter_preview_form($form, &$form_state, $flexifilter) {
   if (!isset($form_state['storage']['preview'])) {
     $form['input'] = array(
       '#type' => 'textarea',
@@ -966,14 +966,14 @@ function flexifilter_filter_preview_form($form_state, $flexifilter) {
       $form[$data['step']][$key . $uniqid]['step'] = array(
         '#type' => 'markup',
         '#prefix' => '<div class="' . $zebra . '"><div class="description">',
-        '#value' => t('@type: @class<p>Settings:<br />!settings</p>', array('@type' => drupal_ucfirst($data['type']), '@class' => $data['class'], '!settings' => $settings)),
+        '#markup' => t('@type: @class<p>Settings:<br />!settings</p>', array('@type' => drupal_ucfirst($data['type']), '@class' => $data['class'], '!settings' => $settings)),
         '#suffix' => '</div>',
       );
       $form[$data['step']][$key . $uniqid]['text'] = array(
         '#type' => 'markup',
         '#title' => drupal_ucfirst($data['type']) . ': ' . $data['class'],
         '#description' => t('Settings:<br />!settings', array('!settings' => $settings)),
-        '#value' => $data['value'] . '</div><strong>' . t('With visible HTML:') . '</strong><div class="flexifilter-plain-text">' . check_plain($data['value']),
+        '#markup' => $data['value'] . '</div><strong>' . t('With visible HTML:') . '</strong><div class="flexifilter-plain-text">' . check_plain($data['value']),
         '#prefix' => '<strong>' . t('As it appears to users:') . '</strong><div class="flexifilter-text">',
         '#suffix' => '</div></div>',
       );
@@ -984,6 +984,7 @@ function flexifilter_filter_preview_form($form_state, $flexifilter) {
 }
 
 function flexifilter_filter_preview_form_submit($form, &$form_state) {
+  $form_state['rebuild'] = TRUE;
   variable_set('flexifilter_preview', TRUE);
   variable_set('flexifilter_preview_text', array());
   $form_state['storage']['input'] = $form_state['values']['input'];
