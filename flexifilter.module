@@ -517,7 +517,7 @@ function flexifilter_save_filter($filter) {
       $pids_to_reuse[] = $row->pid;
     }
     sort($pids_to_reuse, SORT_NUMERIC);
-    $pid_root = _flexifilter_save_filter_components($filter['components'], $fid, $pids_to_reuse);
+    $filter_values['pid_root'] = _flexifilter_save_filter_components($filter['components'], $fid, $pids_to_reuse);
     if (count($pids_to_reuse) > 0) {
       db_query('DELETE FROM {flexifilter_parts} WHERE pid = ' . implode($pids_to_reuse, ' OR pid = '), array($fid));
     }
