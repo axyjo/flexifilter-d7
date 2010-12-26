@@ -499,7 +499,7 @@ function flexifilter_filter_edit_form_components($data, &$data_base, $show_advan
  * The add/edit form for Flexifilters.
  */
 function flexifilter_filter_edit_form($form, &$form_state, $flexifilter = 'new') {
-  if (!isset($form_state['post']) || !isset($form_state['post']['fid'])) {
+  if (!isset($form_state['input']) || !isset($form_state['input']['fid'])) {
     $data = array();
     $data['fid'] = $flexifilter === 'new' ? 'new' : $flexifilter['id'];
     $data['basic'] = array();
@@ -517,7 +517,7 @@ function flexifilter_filter_edit_form($form, &$form_state, $flexifilter = 'new')
     $expand_root_levels = TRUE;
   }
   else {
-    $data = $form_state['post'];
+    $data = $form_state['input'];
     if (!isset($data['basic']['advanced'])) {
       $data['basic']['advanced'] = 0;
     }
