@@ -416,6 +416,12 @@ function flexifilter_filter_process($text, $filter, $format, $langcode, $cache, 
 }
 
 function flexifilter_filter_tips($filter, $format, $long = FALSE) {
+  $filters = flexifilter_get_filters();
+  foreach($filters as $row) {
+    if($row['enabled'] && $row['label'] == $filter->title) {
+      $flexifilter = $row;
+    }
+  }
   if ($long) {
     return str_replace('<--break-->', '', $flexifilter['description']);
   }
