@@ -382,13 +382,15 @@ function flexifilter_get_grouped_labels($elements) {
 function flexifilter_filter_info() {
   $filters = array();
   foreach (flexifilter_get_filters(FALSE) as $fid => $filter) {
-    $filters[$filter['label']] = array(
-      'title' => t($filter['label']),
-      'description' => t($filter['description']),
-      'prepare callback' => 'flexifilter_filter_prepare',
-      'process callback' => 'flexifilter_filter_process',
-      'tips callback' => 'flexifilter_filter_tips',
-    );
+    if($filter['enabled']) {
+      $filters[$filter['label']] = array(
+        'title' => t($filter['label']),
+        'description' => t($filter['description']),
+        'prepare callback' => 'flexifilter_filter_prepare',
+        'process callback' => 'flexifilter_filter_process',
+        'tips callback' => 'flexifilter_filter_tips',
+      );
+    }
   }
   return $filters;
 }
