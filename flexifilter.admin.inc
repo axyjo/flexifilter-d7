@@ -792,7 +792,10 @@ function flexifilter_filter_disable_form($form, &$form_state, $flexifilter) {
     '#type' => 'hidden',
     '#value' => $flexifilter['id'],
   );
-
+  if(!$flexifilter['enabled']) {
+    drupal_set_message('This Flexifilter is already disabled.');
+    drupal_goto('admin/structure/flexifilters');
+  }
   return confirm_form($form, t('Are you sure you want to disable the Flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/structure/flexifilters', t('If you disable the Flexifilter, then it cannot be used in any text formats.'), t('Disable'), t('Cancel'));
 }
 
@@ -815,7 +818,10 @@ function flexifilter_filter_enable_form($form, &$form_state, $flexifilter) {
     '#type' => 'hidden',
     '#value' => $flexifilter['id'],
   );
-
+  if($flexifilter['enabled']) {
+    drupal_set_message('This Flexifilter is already enabled.');
+    drupal_goto('admin/structure/flexifilters');
+  }
   return confirm_form($form, t('Are you sure you want to enable the Flexifilter "%flexifilter"?', array('%flexifilter' => $flexifilter['label'])), 'admin/structure/flexifilters', t(''), t('Enable'), t('Cancel'));
 }
 
