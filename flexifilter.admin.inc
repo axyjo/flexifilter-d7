@@ -868,9 +868,9 @@ function flexifilter_filter_input_form($form_state) {
 }
 
 function flexifilter_filter_input_form_submit($form, &$form_state) {
-  $fid = unserialize($form_state['values']['flexifilter']);
-  if ($fid) {
-    drupal_goto('admin/structure/flexifilters/' . flexifilter_save_filter($form_state['values']['flexifilter']) . '/edit');
+  $filter = unserialize($form_state['values']['flexifilter']);
+  if ($filter) {
+    drupal_goto('admin/structure/flexifilters/' . flexifilter_save_filter($filter) . '/edit');
   }
   else {
     drupal_set_message(t('It appears that the serialized Flexifilter you entered was improperly formed. Please check the source.'), 'error');
